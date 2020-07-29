@@ -19,3 +19,7 @@
 [Etcd](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/etcd.md#etcd)
 
 ## Install OpenStack services
+
+[Keystone](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone-authentication-service)
+
+[Glance](https://github.com/kukkalli/OpenStack/blob/master/services/glance.md#glance-image-service)
