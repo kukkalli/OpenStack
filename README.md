@@ -10,3 +10,5 @@
 
 [OpenStack packages](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)
 
+[SQL Database](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/sql.md#sql-database)
+
