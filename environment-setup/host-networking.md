@@ -69,3 +69,5 @@ ff02::2 ip6-allrouters
 10.10.0.32      compute02
 ```
 
+[Home](https://github.com/kukkalli/OpenStack#openstack-installation-guide)
+[Back](https://github.com/kukkalli/OpenStack#environment-setup)
