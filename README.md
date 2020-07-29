@@ -15,3 +15,7 @@
 [Message Queue](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/rabbitmq.md#message-queue)
 
 [Memcached](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/memcached.md#memcached)
+
+[Etcd](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/etcd.md#etcd)
+
+## Install OpenStack services

@@ -20,4 +20,4 @@
 
 [Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/rabbitmq.md#message-queue)
 [Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/rabbitmq.md#message-queue)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/etcd.md#etcd)
