@@ -1,9 +1,10 @@
 # OpenStack
 OpenStack Installation Guide
 
-[SSH Configuration](https://github.com/kukkalli/OpenStack/blob/master/initial-setup/ssh.md)
+[SSH Configuration](https://github.com/kukkalli/OpenStack/blob/master/initial-setup/ssh.md#setup-ssh-keys)
 
 ##Environment Setup
+
 [Host Networking](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/host-networking.md)
 
 ### Network Time Protocol (NTP)
