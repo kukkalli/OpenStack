@@ -15,5 +15,6 @@ ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAFJ/TSf
 ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAG6PCMQcMNvSA4yRmHETOYdj60fsJo4n8FOBKmlw2fJR7xWMND0DQWTVvPssv3bw1iKn5zLbx4aeVd7idKT00HsjwB4mX1/+UBVUeP/21tp50J3XsG5Pdwz4JL6LeRWvurKoU66bpBR5u0Iuo9VrJlHfn3GbCiHzke7uUt3QBmBWkxroQ== sdn@sdnc
 ```
 
+[Previous](https://github.com/kukkalli/OpenStack#initial-setup)
 [Home](https://github.com/kukkalli/OpenStack#openstack-installation-guide)
-[Back](https://github.com/kukkalli/OpenStack#initial-setup)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/host-networking.md#host-networking)

@@ -13,3 +13,5 @@
 [SQL Database](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/sql.md#sql-database)
 
 [Message Queue](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/rabbitmq.md#message-queue)
+
+[Memcached](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/memcached.md#memcached)

@@ -31,4 +31,4 @@ Secure the database service by running the ```mysql_secure_installation``` scrip
 
 [Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)
 [Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/rabbitmq.md#message-queue)
