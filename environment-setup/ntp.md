@@ -50,5 +50,6 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
 ^* controller                    4   6   377    57    +11us[  +22us] +/-   11ms
 ```
+
 [Home](https://github.com/kukkalli/OpenStack#openstack-installation-guide)
 [Back](https://github.com/kukkalli/OpenStack#environment-setup)
