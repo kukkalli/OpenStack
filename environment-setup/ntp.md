@@ -3,7 +3,7 @@
 # apt install chrony
 ```
 ### On Controller node:
-#### edit the /etc/chrony/chrony.conf file:
+#### edit the ```/etc/chrony/chrony.conf``` file:
 ```bash
 # server NTP_SERVER iburst
 
@@ -31,7 +31,7 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ```
 
 ### On Other nodes:
-#### edit the /etc/chrony/chrony.conf file:
+#### edit the ```/etc/chrony/chrony.conf``` file:
 ```bash
 server controller iburst
 
@@ -51,5 +51,6 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ^* controller                    4   6   377    57    +11us[  +22us] +/-   11ms
 ```
 
-[Home](https://github.com/kukkalli/OpenStack#openstack-installation-guide)
-[Back](https://github.com/kukkalli/OpenStack#environment-setup)
+[Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/host-networking.md#host-networking)
+[Home](https://github.com/kukkalli/OpenStack#environment-setup)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)

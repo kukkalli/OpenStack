@@ -4,9 +4,9 @@
 # apt install mariadb-server python3-pymysql
 ```
 
-Create and edit the /etc/mysql/mariadb.conf.d/99-openstack.cnf file and complete the following actions
+Create and edit the ```/etc/mysql/mariadb.conf.d/99-openstack.cnf``` file and complete the following actions
 
-- Create a [mysqld] section, and set the bind-address key to the management IP address of the controller node to enable access by other nodes via the management network. Set additional keys to enable useful options and the UTF-8 character set:
+- Create a ```[mysqld]``` section, and set the bind-address key to the management IP address of the controller node to enable access by other nodes via the management network. Set additional keys to enable useful options and the UTF-8 character set:
 
 ```bash
 [mysqld]
@@ -29,5 +29,6 @@ Secure the database service by running the ```mysql_secure_installation``` scrip
 # mysql_secure_installation
 ```
 
-[Home](https://github.com/kukkalli/OpenStack#openstack-installation-guide)
-[Back](https://github.com/kukkalli/OpenStack#environment-setup)
+[Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)
+[Home](https://github.com/kukkalli/OpenStack#environment-setup)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)

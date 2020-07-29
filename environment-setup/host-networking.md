@@ -1,13 +1,13 @@
 ## Host networking
 ### Configure network interfaces
 #### For persistence in netplan configuration, disable cloud config.
-##### Create the file /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+##### Create the file ```/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg```
 
 ```bash
 network: {config: disabled}
 ```
 
-#### Create or Edit the /etc/netplan/50-cloud-init.yaml file accordingly.
+#### Create or Edit the ```/etc/netplan/50-cloud-init.yaml``` file accordingly.
 ```bash
 # This file is generated from information provided by the datasource.  Changes
 # to it will not persist across an instance reboot.  To disable cloud-init's
@@ -46,7 +46,7 @@ network:
 ```
 
 ### Configure name resolution
-Edit the /etc/hosts file to contain the following on all the nodes
+Edit the ```/etc/hosts``` file to contain the following on all the nodes
 ```bash
 127.0.0.1 localhost
 
@@ -69,5 +69,5 @@ ff02::2 ip6-allrouters
 10.10.0.32      compute02
 ```
 
-[Home](https://github.com/kukkalli/OpenStack#openstack-installation-guide)
-[Back](https://github.com/kukkalli/OpenStack#environment-setup)
+[Home](https://github.com/kukkalli/OpenStack#environment-setup)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/ntp.md#network-time-protocol-ntp)
