@@ -46,7 +46,7 @@ network:
 ```
 
 ### Configure name resolution
-Edit the /etc/hosts file to contain the following on al nodes
+Edit the /etc/hosts file to contain the following on all the nodes
 ```bash
 127.0.0.1 localhost
 
