@@ -183,14 +183,7 @@ root@controller:~# placement-status upgrade check
 | Result: Success                  |
 | Details: None                    |
 +----------------------------------+
-
 ```
-
-
-
-
-
-
 
 
 [Previous](https://github.com/kukkalli/OpenStack/blob/master/services/glance.md#glance-image-service)

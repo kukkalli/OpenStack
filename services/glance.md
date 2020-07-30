@@ -135,7 +135,7 @@ os@controller:~$ openstack endpoint create --region TUCKN image admin http://con
   connection = mysql+pymysql://glance:tuckn2020@controller/glance
   ```
   - In the ```[keystone_authtoken]``` and ```[paste_deploy]``` sections, configure Identity service access:
-  ```
+  ```bash
   [keystone_authtoken]
   # ...
   www_authenticate_uri = http://controller:5000
