@@ -28,4 +28,4 @@ ETCD_LISTEN_CLIENT_URLS="http://10.10.0.21:2379"
 
 [Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/memcached.md#memcached)
 [Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone-authentication-service)

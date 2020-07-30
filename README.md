@@ -20,6 +20,11 @@
 
 ## Install OpenStack services
 
+### Keystone
+#### Standalone setup
 [Keystone](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone-authentication-service)
 
+### Glance
+#### Standalone setup
 [Glance](https://github.com/kukkalli/OpenStack/blob/master/services/glance.md#glance-image-service)
+
