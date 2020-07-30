@@ -20,11 +20,18 @@
 
 ## Install OpenStack services
 
-### Keystone
+### Identity Service
 #### Standalone setup
-[Keystone](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone-authentication-service)
+[Keystone](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone-identity-service)
 
-### Glance
+### Image Service
 #### Standalone setup
 [Glance](https://github.com/kukkalli/OpenStack/blob/master/services/glance.md#glance-image-service)
 
+### Placement Service
+#### Standalone setup
+[Placement](https://github.com/kukkalli/OpenStack/blob/master/services/placement.md#placement-service)
+
+### Compute Service
+#### Standalone setup
+[Nova](https://github.com/kukkalli/OpenStack/blob/master/services/nova.md#nova-compute-service)

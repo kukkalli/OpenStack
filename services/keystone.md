@@ -1,4 +1,4 @@
-## Keystone (Authentication Service)
+## Keystone (Identity Service)
 ### Install and configure
 #### Prerequisites
 - Use the database access client to connect to the database server as the ```root``` user:
