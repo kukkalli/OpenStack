@@ -1,7 +1,7 @@
 ## Install and configure controller node
 
 ### Prerequisites
-#### Use the database access client to connect to the database server as the root user
+#### Use the database access client to connect to the database server as the ```root``` user
 ```
 # mysql
 ```
@@ -48,7 +48,7 @@ $ . admin-openrc
 ```
 
 #### Create the service credentials:
-- Create the nova user:
+- Create the ```nova``` user:
 ```
 $ openstack user create --domain tuc --password-prompt nova
 
@@ -66,11 +66,11 @@ Repeat User Password:
 | password_expires_at | None                             |
 +---------------------+----------------------------------+
 ```
-- Add the admin role to the nova user:
+- Add the ```admin``` role to the ```nova``` user:
 ```
 $ openstack role add --project service --user nova admin
 ```
-- Create the nova service entity:
+- Create the ```nova``` service entity:
 ```
 $ openstack service create --name nova --description "OpenStack Compute Service" compute
 
@@ -209,26 +209,26 @@ username = placement
 password = tuckn2020
 ```
 
-- Populate the nova-api database:
+- Populate the ```nova-api``` database:
 ```
 # su -s /bin/sh -c "nova-manage api_db sync" nova
 ```
-- Register the cell0 database:
+- Register the ```cell0``` database:
 ```
 # su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
 ```
-- Create the cell1 cell:
+- Create the ```cell1``` cell:
 ```
 # su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
 
 root@controller:~# su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
 2d48d622-1173-49d8-a0fa-72551c125c75
 ```
-- Populate the nova database:
+- Populate the ```nova``` database:
 ```
 # su -s /bin/sh -c "nova-manage db sync" nova
 ```
-- Verify nova cell0 and cell1 are registered correctly:
+- Verify nova ```cell0``` and ```cell1``` are registered correctly:
 ```
 # su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 
