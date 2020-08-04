@@ -187,6 +187,7 @@ enabled = true
 # ...
 server_listen = $my_ip
 server_proxyclient_address = $my_ip
+novncproxy_base_url = http://10.10.0.21:6080/vnc_auto.html
 
 [glance]
 # ...
@@ -219,6 +220,9 @@ password = tuckn2020
 - Create the cell1 cell:
 ```
 # su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+
+root@controller:~# su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+2d48d622-1173-49d8-a0fa-72551c125c75
 ```
 - Populate the nova database:
 ```
@@ -228,8 +232,15 @@ password = tuckn2020
 ```
 # su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 
+root@controller:~# su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
++-------+--------------------------------------+------------------------------------------+-------------------------------------------------+----------+
+|  Name |                 UUID                 |              Transport URL               |               Database Connection               | Disabled |
++-------+--------------------------------------+------------------------------------------+-------------------------------------------------+----------+
+| cell0 | 00000000-0000-0000-0000-000000000000 |                  none:/                  | mysql+pymysql://nova:****@controller/nova_cell0 |  False   |
+| cell1 | 2d48d622-1173-49d8-a0fa-72551c125c75 | rabbit://openstack:****@controller:5672/ |    mysql+pymysql://nova:****@controller/nova    |  False   |
++-------+--------------------------------------+------------------------------------------+-------------------------------------------------+----------+
 ```
-### Finalize installation¶
+### Finalize installation
 - Restart the Compute services:
 ```
 # service nova-api restart
@@ -244,3 +255,5 @@ service nova-conductor restart
 service nova-novncproxy restart
 ```
 
+[Nova Home](https://github.com/kukkalli/OpenStack/blob/master/services/nova.md#nova-compute-service)
+[Next](https://github.com/kukkalli/OpenStack/blob/master/services/nova-compute.md#install-and-configure-compute-node)
