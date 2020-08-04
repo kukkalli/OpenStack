@@ -35,3 +35,10 @@
 ### Compute Service
 #### Standalone setup
 [Nova](https://github.com/kukkalli/OpenStack/blob/master/services/nova.md#nova-compute-service)
+
+### Networking Service
+#### Standalone setup
+[Neutron](https://github.com/kukkalli/OpenStack/blob/master/services/neutron.md#neutron-networking-service)
+
+### OpenStack Dashboard
+[Horizon](https://github.com/kukkalli/OpenStack/blob/master/services/horizon.md#horizon-dashboard)
