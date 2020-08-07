@@ -52,7 +52,7 @@ GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'tuckn2020';
   provider = fernet
   ```
 
-The updated ```keystone.conf``` file can be found at: [keystone.conf](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.conf)
+The updated ```keystone.conf``` file can be found at: [keystone.conf](https://github.com/kukkalli/OpenStack/blob/master/services/controller/keystone.conf)
 
 - Populate the Identity service database:
 ```

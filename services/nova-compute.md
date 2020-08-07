@@ -170,7 +170,7 @@ novncproxy_base_url = http://10.10.0.21:6080/vnc_auto.html
 
 ```
 
-The updated ```nova.conf``` file can be found at: [nova.conf](https://github.com/kukkalli/OpenStack/blob/master/services/compute-nova.conf)
+The updated ```nova.conf``` file can be found at: [nova.conf](https://github.com/kukkalli/OpenStack/blob/master/services/compute/nova.conf)
 
 - Restart the Compute service:
 ```
