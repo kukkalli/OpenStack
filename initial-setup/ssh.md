@@ -16,4 +16,4 @@ ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAG6PCMQ
 ```
 
 [Home](https://github.com/kukkalli/OpenStack#initial-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/host-networking.md#host-networking)
+[Next](../environment-setup/host-networking.md#host-networking)
