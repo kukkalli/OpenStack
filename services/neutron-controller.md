@@ -187,27 +187,46 @@ The updated ```neutron.conf``` file can be found at: [neutron.conf](https://gith
 ### Configure the Modular Layer 2 (ML2) plug-in
 - Edit the ```/etc/neutron/plugins/ml2/ml2_conf.ini``` file and complete the following actions:
 ```bash
+[DEFAULT]
 [ml2]
 type_drivers = flat,vlan,vxlan
 tenant_network_types = vxlan
-mechanism_drivers = linuxbridge,l2population
-extension_drivers = port_security
+mechanism_drivers = openvswitch,l2population
+extension_drivers = port_security,qos
+physical_network_mtus = 9000
 
 [ml2_type_flat]
-flat_networks = provider
+flat_networks = tuc11
 
+[ml2_type_geneve]
+[ml2_type_gre]
+[ml2_type_vlan]
 [ml2_type_vxlan]
 vni_ranges = 1:1000
 
+[ovs_driver]
 [securitygroup]
 enable_ipset = true
-```
 
-### Configure the Linux bridge agent
-- Edit the ```/etc/neutron/plugins/ml2/linuxbridge_agent.ini``` file and complete the following actions:
+[sriov_driver]
+```
+The updated ```ml2_conf.ini``` file can be found at: [ml2_conf.ini](https://github.com/kukkalli/OpenStack/blob/master/services/controller/ml2_conf.ini)
+
+### Configure the OpenVswitch bridge agent
+- Edit the ```/etc/neutron/plugins/ml2/openvswitch_agent.ini``` file and complete the following actions:
 ```bash
-[linux_bridge]
-physical_interface_mappings = provider:PROVIDER_INTERFACE_NAME
+[DEFAULT]
+[agent]
+tunnel_types = vxlan
+l2_population = True
+
+[network_log]
+[ovs]
+local_ip = 10.10.0.21
+bridge_mappings = tuc11:brtuc11
+
+[securitygroup]
+firewall_driver = iptables_hybrid
 
 [vxlan]
 enable_vxlan = true
