@@ -231,6 +231,7 @@ firewall_driver = iptables_hybrid
 
 [xenapi]
 ```
+The updated ```openvswitch_agent.ini``` file can be found at: [openvswitch_agent.ini](https://github.com/kukkalli/OpenStack/blob/master/services/controller/openvswitch_agent.ini)
 
 ### Configure the layer-3 agent
 - Edit the ```/etc/neutron/l3_agent.ini``` file and complete the following actions:
@@ -242,7 +243,7 @@ interface_driver = openvswitch
 [network_log]
 [ovs]
 ```
-
+The updated ```l3_agent.ini``` file can be found at: [l3_agent.ini](services/controller/l3_agent.ini)
 
 
 neutron-dhcp-agent neutron-metadata-agent
