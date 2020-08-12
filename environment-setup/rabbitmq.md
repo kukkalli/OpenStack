@@ -20,6 +20,6 @@ Replace RABBIT_PASS with a suitable password.
 Setting permissions for user "openstack" in vhost "/"
 ```
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/sql.md#sql-database)
-[Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/memcached.md#memcached)
+[Previous](sql.md#sql-database)
+[Home](../README.md#environment-setup)
+[Next](memcached.md#memcached)

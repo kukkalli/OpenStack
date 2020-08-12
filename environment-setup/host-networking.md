@@ -69,6 +69,6 @@ ff02::2 ip6-allrouters
 10.10.0.32      compute02
 ```
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/initial-setup/ssh.md#setup-ssh-keys)
-[Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/ntp.md#network-time-protocol-ntp)
+[Previous](../initial-setup/ssh.md#setup-ssh-keys)
+[Home](../README.md#environment-setup)
+[Next](ntp.md#network-time-protocol-ntp)

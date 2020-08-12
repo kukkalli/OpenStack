@@ -51,6 +51,6 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ^* controller                    4   6   377    57    +11us[  +22us] +/-   11ms
 ```
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/host-networking.md#host-networking)
-[Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/packages.md#openstack-packages)
+[Previous](host-networking.md#host-networking)
+[Home](../README.md#environment-setup)
+[Next](packages.md#openstack-packages)

@@ -14,6 +14,6 @@
 # apt install python3-openstackclient
 ```
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/ntp.md#network-time-protocol-ntp)
-[Home](https://github.com/kukkalli/OpenStack#environment-setup)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/sql.md#sql-database)
+[Previous](ntp.md#network-time-protocol-ntp)
+[Home](../README.md#environment-setup)
+[Next](sql.md#sql-database)
