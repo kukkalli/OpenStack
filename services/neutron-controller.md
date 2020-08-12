@@ -218,6 +218,7 @@ The updated ```ml2_conf.ini``` file can be found at: [ml2_conf.ini](https://gith
 [DEFAULT]
 [agent]
 tunnel_types = vxlan
+veth_mtu = 9000
 l2_population = True
 
 [network_log]
@@ -228,27 +229,27 @@ bridge_mappings = tuc11:brtuc11
 [securitygroup]
 firewall_driver = iptables_hybrid
 
-[vxlan]
-enable_vxlan = true
-local_ip = OVERLAY_INTERFACE_IP_ADDRESS
-l2_population = true
-
-[securitygroup]
-enable_security_group = true
-firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+[xenapi]
 ```
 
 ### Configure the layer-3 agent
 - Edit the ```/etc/neutron/l3_agent.ini``` file and complete the following actions:
 ```bash
 [DEFAULT]
-interface_driver = linuxbridge
+interface_driver = openvswitch
+
+[agent]
+[network_log]
+[ovs]
 ```
 
 
 
 neutron-dhcp-agent neutron-metadata-agent
 
+[DEFAULT]
+enable_isolated_metadata = True
+interface_driver = openvswitch
 
 
 [Previous](https://github.com/kukkalli/OpenStack/blob/master/services/openvswitch-dpdk.md#install-and-configure-openvswitch-dpdk)
