@@ -243,7 +243,7 @@ interface_driver = openvswitch
 [network_log]
 [ovs]
 ```
-The updated ```l3_agent.ini``` file can be found at: [l3_agent.ini](services/controller/l3_agent.ini)
+The updated ```l3_agent.ini``` file can be found at: [l3_agent.ini](l3_agent.ini)
 
 
 neutron-dhcp-agent neutron-metadata-agent
