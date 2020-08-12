@@ -52,7 +52,7 @@ GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'tuckn2020';
   provider = fernet
   ```
 
-The updated ```keystone.conf``` file can be found at: [keystone.conf](https://github.com/kukkalli/OpenStack/blob/master/services/controller/keystone.conf)
+The updated ```keystone.conf``` file can be found at: [keystone.conf](keystone.conf)
 
 - Populate the Identity service database:
 ```
@@ -203,7 +203,6 @@ $ openstack token issue
 ```
 
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/environment-setup/etcd.md#etcd)
-[Home](https://github.com/kukkalli/OpenStack#install-openstack-services)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/glance.md#glance-image-service)
-
+[Previous](../../environment-setup/etcd.md#etcd)
+[Home](../../README.md#install-openstack-services)
+[Next](glance.md#glance-image-service)

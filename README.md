@@ -22,15 +22,15 @@
 
 ### Identity Service
 #### Standalone setup
-[Keystone](services/keystone.md#keystone-identity-service)
+[Keystone](services/controller/keystone.md#keystone-identity-service)
 
 ### Image Service
 #### Standalone setup
-[Glance](services/glance.md#glance-image-service)
+[Glance](services/controller/glance.md#glance-image-service)
 
 ### Placement Service
 #### Standalone setup
-[Placement](services/placement.md#placement-service)
+[Placement](services/controller/placement.md#placement-service)
 
 ### Compute Service
 #### Standalone setup

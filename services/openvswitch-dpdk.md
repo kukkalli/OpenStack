@@ -40,9 +40,19 @@ All commands to be executed with sudo
 ovs-vsctl add-br brtuc11
 ovs-vsctl add-port brtuc11 tuc11
 
-```IP Address reassignment```
+```IP Address reassignment on controller```
 ip addr flush dev tuc11
 ip addr add 10.11.0.21/16 dev brtuc11
+ip link set brtuc11 up
+
+```IP Address reassignment on compute01```
+ip addr flush dev tuc11
+ip addr add 10.11.0.31/16 dev brtuc11
+ip link set brtuc11 up
+
+```IP Address reassignment on compute02```
+ip addr flush dev tuc11
+ip addr add 10.11.0.32/16 dev brtuc11
 ip link set brtuc11 up
 ```
 
@@ -81,5 +91,5 @@ IDX LINK             TYPE               OPERATIONAL SETUP
 ```
 
 
-[Neutron Home](https://github.com/kukkalli/OpenStack/blob/master/services/neutron.md#neutron-networking-service)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/neutron-controller.md#install-and-configure-controller-node)
+[Neutron Home](neutron.md#neutron-networking-service)
+[Next](controller/neutron.md#install-and-configure-controller-node)

@@ -255,5 +255,5 @@ service nova-conductor restart
 service nova-novncproxy restart
 ```
 
-[Nova Home](https://github.com/kukkalli/OpenStack/blob/master/services/nova.md#nova-compute-service)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/nova-compute.md#install-and-configure-compute-node)
+[Nova Home](../nova.md#nova-compute-service)
+[Next](../compute/nova.md#install-and-configure-compute-node)

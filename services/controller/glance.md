@@ -224,6 +224,6 @@ os@controller:~$ glance image-list
 ```
 
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/services/keystone.md#keystone-identity-service)
-[Home](https://github.com/kukkalli/OpenStack#install-openstack-services)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/placement.md#placement-service)
+[Previous](keystone.md#keystone-identity-service)
+[Home](../../README.md#install-openstack-services)
+[Next](placement.md#placement-service)

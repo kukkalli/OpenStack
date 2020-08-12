@@ -170,7 +170,7 @@ novncproxy_base_url = http://10.10.0.21:6080/vnc_auto.html
 
 ```
 
-The updated ```nova.conf``` file can be found at: [nova.conf](https://github.com/kukkalli/OpenStack/blob/master/services/compute/nova.conf)
+The updated ```nova.conf``` file can be found at: [nova.conf](nova.conf)
 
 - Restart the Compute service:
 ```
@@ -304,6 +304,6 @@ root@controller:~# nova-status upgrade check
 +--------------------------------+
 ```
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/services/nova-controller.md#install-and-configure-controller-node)
-[Nova Home](https://github.com/kukkalli/OpenStack/blob/master/services/nova.md#nova-compute-service)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/neutron.md#neutron-networking-service)
+[Previous](../controller/nova.md#install-and-configure-controller-node)
+[Nova Home](../nova.md#nova-compute-service)
+[Next](../neutron.md#neutron-networking-service)
