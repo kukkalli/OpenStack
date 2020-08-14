@@ -193,6 +193,17 @@ novncproxy_base_url = http://10.10.0.21:6080/vnc_auto.html
 # ...
 api_servers = http://controller:9292
 
+[neutron]
+# ...
+auth_url = http://controller:5000
+auth_type = password
+project_domain_name = TUC
+user_domain_name = TUC
+region_name = TUCKN
+project_name = service
+username = neutron
+password = tuckn2020
+
 [oslo_concurrency]
 # ...
 lock_path = /var/lib/nova/tmp

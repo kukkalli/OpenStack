@@ -6,6 +6,6 @@
 
 [Installation on Compute Node](compute/neutron.md#install-and-configure-compute-node)
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/services/nova.md#nova-compute-service)
-[Home](https://github.com/kukkalli/OpenStack#install-openstack-services)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/horizon.md#horizon-dashboard)
+[Previous](nova.md#nova-compute-service)
+[Home](../README.md#install-openstack-services)
+[Next](horizon.md#horizon-dashboard)

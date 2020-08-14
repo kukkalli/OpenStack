@@ -127,7 +127,7 @@ os@controller:~$ openstack endpoint create --region TUCKN network admin http://c
 #### Install and configure
 - Install the packages:
 ```
-# apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent
+# apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent
 ```
 
 - Edit the ```/etc/neutron/neutron.conf``` file and complete the following actions:
@@ -245,14 +245,49 @@ interface_driver = openvswitch
 ```
 The updated ```l3_agent.ini``` file can be found at: [l3_agent.ini](l3_agent.ini)
 
-
-neutron-dhcp-agent neutron-metadata-agent
-
+### Configure the DHCP agent
+- Edit the ```/etc/neutron/dhcp_agent.ini``` file and complete the following actions:
+```bash
 [DEFAULT]
 enable_isolated_metadata = True
 interface_driver = openvswitch
 
+[agent]
+[ovs]
+```
+The updated ```dhcp_agent.ini``` file can be found at: [dhcp_agent.ini](dhcp_agent.ini)
 
-[Previous](https://github.com/kukkalli/OpenStack/blob/master/services/openvswitch-dpdk.md#install-and-configure-openvswitch-dpdk)
-[Neutron Home](https://github.com/kukkalli/OpenStack/blob/master/services/neutron.md#neutron-networking-service)
-[Next](https://github.com/kukkalli/OpenStack/blob/master/services/neutron-compute.md#install-and-configure-compute-node)
+### Configure the metadata agent
+- Edit the ```/etc/neutron/metadata_agent.ini``` file and complete the following actions:
+```bash
+[DEFAULT]
+nova_metadata_host = controller
+metadata_proxy_shared_secret = tuckn2020
+
+[agent]
+[cache]
+```
+The updated ```metadata_agent.ini``` file can be found at: [metadata_agent.ini](metadata_agent.ini)
+
+### Configure metering agent
+- Edit the ```/etc/neutron/metering_agent.ini``` file and complete the following actions:
+```bash
+[DEFAULT]
+interface_driver = openvswitch
+driver = iptables
+
+[agent]
+[ovs]
+```
+The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](metering_agent.ini)
+
+### Finalize installation
+- Populate the database:
+```
+# su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+```
+
+
+[Previous](../openvswitch-dpdk.md#install-and-configure-openvswitch-dpdk)
+[Neutron Home](../neutron.md#neutron-networking-service)
+[Next](../compute/neutron.md#install-and-configure-compute-node)
