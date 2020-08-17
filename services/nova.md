@@ -6,4 +6,4 @@
 
 [Previous](controller/placement.md#placement-service)
 [Home](../README.md#install-openstack-services)
-[Next](../neutron.md#neutron-networking-service)
+[Next](neutron.md#neutron-networking-service)
