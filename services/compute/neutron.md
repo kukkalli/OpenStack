@@ -2,4 +2,4 @@
 
 [Previous](../controller/neutron.md#install-and-configure-controller-node)
 [Neutron Home](../neutron.md#neutron-networking-service)
-[Next](../controlller/horizon.md#horizon-dashboard)
+[Next](../controller/horizon.md#openstack-dashboard-horizon)
