@@ -41,4 +41,4 @@
 [Neutron](services/neutron.md#neutron-networking-service)
 
 ### OpenStack Dashboard
-[Horizon](services/horizon.md#horizon-dashboard)
+[Horizon](services/controller/horizon.md#openstack-dashboard-horizon)
