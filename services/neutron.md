@@ -8,4 +8,4 @@
 
 [Previous](nova.md#nova-compute-service)
 [Home](../README.md#install-openstack-services)
-[Next](horizon.md#horizon-dashboard)
+[Next](controller/horizon.md#openstack-dashboard-horizon)
