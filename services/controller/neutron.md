@@ -127,7 +127,7 @@ os@controller:~$ openstack endpoint create --region TUCKN network admin http://c
 #### Install and configure
 - Install the packages:
 ```
-# apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent
+# apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent neutron-metering-agent
 ```
 
 - Edit the ```/etc/neutron/neutron.conf``` file and complete the following actions:
@@ -285,6 +285,27 @@ The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](
 - Populate the database:
 ```
 # su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+```
+
+### Restart services
+
+```
+# service nova-api restart
+# service neutron-server restart
+# service neutron-openvswitch-agent restart
+# service neutron-dhcp-agent restart
+# service neutron-metadata-agent restart
+# service neutron-l3-agent restart
+# service neutron-metering-agent restart
+
+```Copy below```
+service nova-api restart
+service neutron-server restart
+service neutron-openvswitch-agent restart
+service neutron-dhcp-agent restart
+service neutron-metadata-agent restart
+service neutron-l3-agent restart
+service neutron-metering-agent restart
 ```
 
 
