@@ -78,7 +78,7 @@ keystone-manage credential_setup --keystone-user keystone --keystone-group keyst
   --bootstrap-region-id RegionOne
 
 e.g.
-keystone-manage bootstrap --bootstrap-password tuckn2020 --bootstrap-admin-url http://controller:5000/v3/ --bootstrap-internal-url http://controller:5000/v3/ --bootstrap-public-url http://controller:5000/v3/ --bootstrap-region-id TUCKN
+keystone-manage bootstrap --bootstrap-password tuckn2020 --bootstrap-admin-url http://10.10.0.21:5000/v3/ --bootstrap-internal-url http://10.10.0.21:5000/v3/ --bootstrap-public-url http://10.10.0.21:5000/v3/ --bootstrap-region-id TUCKN
 ```
 
 #### Configure the Apache HTTP server
@@ -109,7 +109,7 @@ export OS_PASSWORD=tuckn2020
 export OS_PROJECT_NAME=admin
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_DOMAIN_NAME=Default
-export OS_AUTH_URL=http://controller:5000/v3
+export OS_AUTH_URL=http://10.10.0.21:5000/v3
 export OS_IDENTITY_API_VERSION=3
 ```
 
@@ -125,21 +125,21 @@ export OS_PASSWORD=tuckn2020
 export OS_PROJECT_NAME=admin
 export OS_USER_DOMAIN_NAME=TUC
 export OS_PROJECT_DOMAIN_NAME=TUC
-export OS_AUTH_URL=http://controller:5000/v3
+export OS_AUTH_URL=http://10.10.0.21:5000/v3
 export OS_IDENTITY_API_VERSION=3
 ```
 
 ### Create a domain, projects, users, and roles
 - This guide uses a service project that contains a unique user for each service that you add to your environment. Create the service project:
 ```
-$ openstack project create --domain tuc --description "Service Project" service
+os@controller:~$ openstack project create --domain tuc --description "Service Project" service
 +-------------+----------------------------------+
 | Field       | Value                            |
 +-------------+----------------------------------+
 | description | Service Project                  |
 | domain_id   | tuc                              |
 | enabled     | True                             |
-| id          | b72c5c7076b942308017bdbc4c84d583 |
+| id          | 6b1a95ba051547a29b385b9b12262806 |
 | is_domain   | False                            |
 | name        | service                          |
 | options     | {}                               |
@@ -157,15 +157,15 @@ $ unset OS_AUTH_URL OS_PASSWORD
 - As the admin user, request an authentication token:
 
 ```
-$ openstack --os-auth-url http://controller:5000/v3 --os-project-domain-name TUC --os-user-domain-name TUC --os-project-name admin --os-username admin token issue
+os@controller:~$ openstack --os-auth-url http://10.10.0.21:5000/v3 --os-project-domain-name TUC --os-user-domain-name TUC --os-project-name admin --os-username admin token issue
 Password:
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Field      | Value                                                                                                                                                                                   |
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| expires    | 2020-07-29T16:45:10+0000                                                                                                                                                                |
-| id         | gAAAAABfIZmGpsn--18Yuvk0JCC64JQOTL1Mrjw8RmkANV_3MDt7SGtOGMjLATpnhe0VCndSyTeV8VfKL_4zxLgBy6WPFGlpAxPMliRW5ALn6h8apGAc_omoHk3RRUGApt0O6XrHOlTzPIAeYJFjAF1dZ35PQFSsnb77cNLRX2ortkPmbD2uea8 |
-| project_id | 8980116a238643deaa65db860bfeabf7                                                                                                                                                        |
-| user_id    | 4b6fd7b359b64da68048873da01eb0d0                                                                                                                                                        |
+| expires    | 2020-08-24T18:01:34+0000                                                                                                                                                                |
+| id         | gAAAAABfQ_JuVn0nMtNeXXNbdDOEdO7DpcJ4ztHvZlYnT4FLpCoXyQV2AQWFVMvhe9cx_o5f-oOTurCf_VE5rELoQCswuT10EJruAceF4n9ATnDrPh2DQIVFOqg0ieC5LPH6Ygp2CympVdv_93gfjMim9jCUjUsKrEXu8IeJb9DosinTuY4dpHg |
+| project_id | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                                                        |
+| user_id    | c349d1ffd3b74fe68d1aa49d71cfce1b                                                                                                                                                        |
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
@@ -191,14 +191,14 @@ $ . admin-openrc
 
 - Request an authentication token:
 ```
-$ openstack token issue
+os@controller:~$ openstack token issue
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Field      | Value                                                                                                                                                                                   |
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| expires    | 2020-07-29T16:47:35+0000                                                                                                                                                                |
-| id         | gAAAAABfIZoXdl93LlBUntrgz_APKB6L-1axRNlFDmx6wmz9awjm9iMMKuV6Nk8fq2UN-ZeDRAikxTz6qh8LWhtunvuaDqjJHpz5qFJ_JfMGaYAZ18tytLAQfl0-dRkggj2K8fqTcKhjMiFPGbYaEPxsY95PuOW_9DC79By0Ug-Fk8GPJqcP4TM |
-| project_id | 8980116a238643deaa65db860bfeabf7                                                                                                                                                        |
-| user_id    | 4b6fd7b359b64da68048873da01eb0d0                                                                                                                                                        |
+| expires    | 2020-08-24T18:02:49+0000                                                                                                                                                                |
+| id         | gAAAAABfQ_K59saD1KSqEBKaQMwmF1X7UrIkr_rBmM8zoMGOr9XhG98YNRU5ETSG9zLltWDOZRfvxB_YqQ5sqL5Odok-BIk5HgYvWBXvwSKJtaKDfVp6EQMsR_dsOsljYU-_DXjtyywHhF4zW4ZppjRCNVe368Es3ZuzcYIBc96oSI9BdZluKIk |
+| project_id | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                                                        |
+| user_id    | c349d1ffd3b74fe68d1aa49d71cfce1b                                                                                                                                                        |
 +------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 

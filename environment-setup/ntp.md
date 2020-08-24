@@ -47,7 +47,7 @@ server controller.etit.tu-chemnitz.de iburst
 210 Number of sources = 1
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
-^* controller                    4   6   377    57    +11us[  +22us] +/-   11ms
+^* controller.etit.tu-chemn>     5   6     7     1   +958ns[  -21us] +/-   11ms
 ```
 
 [Previous](host-networking.md#host-networking)
