@@ -31,10 +31,9 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ```
 
 ### On Other nodes:
-#### edit the ```/etc/chrony/chrony.conf``` file:
+#### edit the ```/etc/chrony/chrony.conf``` file and add:
 ```bash
-server controller iburst
-
+server controller.etit.tu-chemnitz.de iburst
 ```
 
 #### Restart the service
