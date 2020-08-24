@@ -1,7 +1,18 @@
 ## SQL Database
 ### Install the packages
 ```
+# apt-get install software-properties-common
+# apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+# add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror2.hs-esslingen.de/mariadb/repo/10.4/ubuntu bionic main'
+# apt update
 # apt install mariadb-server python3-pymysql
+
+```Copy below```
+apt-get install software-properties-common
+apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror2.hs-esslingen.de/mariadb/repo/10.4/ubuntu bionic main'
+apt update
+apt install mariadb-server python3-pymysql
 ```
 
 Create and edit the ```/etc/mysql/mariadb.conf.d/99-openstack.cnf``` file and complete the following actions

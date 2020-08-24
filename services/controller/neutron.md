@@ -128,6 +128,8 @@ os@controller:~$ openstack endpoint create --region TUCKN network admin http://c
 - Install the packages:
 ```
 # apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent neutron-metering-agent
+
+
 ```
 
 - Edit the ```/etc/neutron/neutron.conf``` file and complete the following actions:
@@ -140,6 +142,7 @@ allow_overlapping_ips = true
 notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
 global_physnet_mtu = 9000
+dhcp_agents_per_network = 2
 transport_url = rabbit://openstack:tuckn2020@controller
 
 [agent]
@@ -249,8 +252,9 @@ The updated ```l3_agent.ini``` file can be found at: [l3_agent.ini](l3_agent.ini
 - Edit the ```/etc/neutron/dhcp_agent.ini``` file and complete the following actions:
 ```bash
 [DEFAULT]
-enable_isolated_metadata = True
 interface_driver = openvswitch
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+enable_isolated_metadata = True
 
 [agent]
 [ovs]
@@ -293,19 +297,27 @@ The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](
 # service nova-api restart
 # service neutron-server restart
 # service neutron-openvswitch-agent restart
+# service neutron-l3-agent restart
+
+# service neutron-metering-agent restart
 # service neutron-dhcp-agent restart
 # service neutron-metadata-agent restart
-# service neutron-l3-agent restart
-# service neutron-metering-agent restart
 
 ```Copy below```
 service nova-api restart
 service neutron-server restart
 service neutron-openvswitch-agent restart
-service neutron-dhcp-agent restart
-service neutron-metadata-agent restart
 service neutron-l3-agent restart
 service neutron-metering-agent restart
+
+
+service neutron-dhcp-agent restart
+service neutron-metadata-agent restart
+
+service neutron-server start
+service neutron-openvswitch-agent start
+service neutron-l3-agent start
+service neutron-metering-agent start
 ```
 
 
