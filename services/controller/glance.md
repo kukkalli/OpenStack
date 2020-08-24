@@ -34,38 +34,38 @@ $ . admin-openrc
 
 - Create the service credentials:
   - Create the ```glance``` user:
-  ```
-  $ openstack user create --domain tuc --password-prompt glance
-  User Password:
-  Repeat User Password:
-  +---------------------+----------------------------------+
-  | Field               | Value                            |
-  +---------------------+----------------------------------+
-  | domain_id           | tuc                              |
-  | enabled             | True                             |
-  | id                  | afb42f41b46b451e930046edfa716b81 |
-  | name                | glance                           |
-  | options             | {}                               |
-  | password_expires_at | None                             |
-  +---------------------+----------------------------------+
-  ```
+```
+os@controller:~$ openstack user create --domain tuc --password-prompt glance
+User Password: tuckn2020
+Repeat User Password: tuckn2020
++---------------------+----------------------------------+
+| Field               | Value                            |
++---------------------+----------------------------------+
+| domain_id           | tuc                              |
+| enabled             | True                             |
+| id                  | f77cf2e7adc149abada278d738b352f6 |
+| name                | glance                           |
+| options             | {}                               |
+| password_expires_at | None                             |
++---------------------+----------------------------------+
+```
   - Add the ```admin``` role to the ```glance``` user and ```service``` project:
-  ```
-  $ openstack role add --project service --user glance admin
-  ```
+```
+$ openstack role add --project service --user glance admin
+```
   - Create the ```glance``` service entity:
-  ```
-  $ openstack service create --name glance --description "OpenStack Image Service" image
-  +-------------+----------------------------------+
-  | Field       | Value                            |
-  +-------------+----------------------------------+
-  | description | OpenStack Image Service          |
-  | enabled     | True                             |
-  | id          | e2bdd4a15c804fbdbd8c8b601286f926 |
-  | name        | glance                           |
-  | type        | image                            |
-  +-------------+----------------------------------+
-  ```
+```
+os@controller:~$ openstack service create --name glance --description "OpenStack Image Service" image
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description | OpenStack Image Service          |
+| enabled     | True                             |
+| id          | f7b4e16b0b204066b85597911faba353 |
+| name        | glance                           |
+| type        | image                            |
++-------------+----------------------------------+
+```
 - Create the Image service API endpoints:
 ```
 $ openstack endpoint create --region RegionOne image public http://controller:9292
@@ -73,52 +73,52 @@ $ openstack endpoint create --region RegionOne image internal http://controller:
 $ openstack endpoint create --region RegionOne image admin http://controller:9292
 
 e.g.
-openstack endpoint create --region TUCKN image public http://controller:9292
-openstack endpoint create --region TUCKN image internal http://controller:9292
-openstack endpoint create --region TUCKN image admin http://controller:9292
+openstack endpoint create --region TUCKN image public http://10.10.0.21:9292
+openstack endpoint create --region TUCKN image internal http://10.10.0.21:9292
+openstack endpoint create --region TUCKN image admin http://10.10.0.21:9292
 
 output:
-os@controller:~$ openstack endpoint create --region TUCKN image public http://controller:9292
+os@controller:~$ openstack endpoint create --region TUCKN image public http://10.10.0.21:9292
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | f9234d8b4bf740c0b4c156f274a64ff8 |
+| id           | 0c9d728c51f54a75922b42541946c9d0 |
 | interface    | public                           |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | e2bdd4a15c804fbdbd8c8b601286f926 |
+| service_id   | f7b4e16b0b204066b85597911faba353 |
 | service_name | glance                           |
 | service_type | image                            |
-| url          | http://controller:9292           |
+| url          | http://10.10.0.21:9292           |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN image internal http://controller:9292
+os@controller:~$ openstack endpoint create --region TUCKN image internal http://10.10.0.21:9292
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 4cf3506363954a4680c81a83e0cdcd06 |
+| id           | a3d99092664149d39142c56f42133983 |
 | interface    | internal                         |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | e2bdd4a15c804fbdbd8c8b601286f926 |
+| service_id   | f7b4e16b0b204066b85597911faba353 |
 | service_name | glance                           |
 | service_type | image                            |
-| url          | http://controller:9292           |
+| url          | http://10.10.0.21:9292           |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN image admin http://controller:9292
+os@controller:~$ openstack endpoint create --region TUCKN image admin http://10.10.0.21:9292
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 45bf1bc39d6a459b8ce83f4fea6d49a8 |
+| id           | 413a30b80c8040c988f5937381aa741a |
 | interface    | admin                            |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | e2bdd4a15c804fbdbd8c8b601286f926 |
+| service_id   | f7b4e16b0b204066b85597911faba353 |
 | service_name | glance                           |
 | service_type | image                            |
-| url          | http://controller:9292           |
+| url          | http://10.10.0.21:9292           |
 +--------------+----------------------------------+
 ```
 
@@ -129,35 +129,35 @@ os@controller:~$ openstack endpoint create --region TUCKN image admin http://con
 ```
 - Edit the ```/etc/glance/glance-api.conf``` file and complete the following actions:
   - In the ```[database]``` section, configure database access:
-  ```bash
-  [database]
-  # ...
-  connection = mysql+pymysql://glance:tuckn2020@controller/glance
-  ```
-  - In the ```[keystone_authtoken]``` and ```[paste_deploy]``` sections, configure Identity service access:
-  ```bash
-  [keystone_authtoken]
-  # ...
-  www_authenticate_uri = http://controller:5000
-  auth_url = http://controller:5000
-  memcached_servers = controller:11211
-  auth_type = password
-  project_domain_name = TUC
-  user_domain_name = TUC
-  project_name = service
-  username = glance
-  password = tuckn2020
+```bash
+[database]
+# ...
+connection = mysql+pymysql://glance:tuckn2020@10.10.0.21/glance
+```
+- In the ```[keystone_authtoken]``` and ```[paste_deploy]``` sections, configure Identity service access:
+```bash
+[keystone_authtoken]
+# ...
+www_authenticate_uri = http://10.10.0.21:5000
+auth_url = http://10.10.0.21:5000
+memcached_servers = 10.10.0.21:11211
+auth_type = password
+project_domain_name = TUC
+user_domain_name = TUC
+project_name = service
+username = glance
+password = tuckn2020
   
-  [paste_deploy]
-  # ...
-  flavor = keystone
+[paste_deploy]
+# ...
+flavor = keystone
   
-  [glance_store]
-  # ...
-  stores = file,http
-  default_store = file
-  filesystem_store_datadir = /var/lib/glance/images/
-  ```
+[glance_store]
+# ...
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+```
 - Populate the Image service database:
 ```
 # su -s /bin/sh -c "glance-manage db_sync" glance
@@ -182,45 +182,44 @@ $ wget http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
 
 - Upload the image to the Image service using the QCOW2 disk format, bare container format, and public visibility so all projects can access it:
 ```
-$ glance image-create --name "cirros" --file cirros-0.5.1-x86_64-disk.img --disk-format qcow2 --container-format bare --visibility public
+$ openstack image create --file cirros-0.5.1-x86_64-disk.img --disk-format qcow2 --container-format bare --public cirros-0.5.1-x86_64
 
-os@controller:~$ glance image-create --name "cirros-0.5.1-x86_64" --file cirros-0.5.1-x86_64-disk.img --disk-format qcow2 --container-format bare --visibility public
-+------------------+----------------------------------------------------------------------------------+
-| Property         | Value                                                                            |
-+------------------+----------------------------------------------------------------------------------+
-| checksum         | 1d3062cd89af34e419f7100277f38b2b                                                 |
-| container_format | bare                                                                             |
-| created_at       | 2020-07-30T09:54:37Z                                                             |
-| disk_format      | qcow2                                                                            |
-| id               | dd072d40-6881-40ba-a9ef-dc01882ca753                                             |
-| min_disk         | 0                                                                                |
-| min_ram          | 0                                                                                |
-| name             | cirros-0.5.1-x86_64                                                              |
-| os_hash_algo     | sha512                                                                           |
-| os_hash_value    | 553d220ed58cfee7dafe003c446a9f197ab5edf8ffc09396c74187cf83873c877e7ae041cb80f3b9 |
-|                  | 1489acf687183adcd689b53b38e3ddd22e627e7f98a09c46                                 |
-| os_hidden        | False                                                                            |
-| owner            | 8980116a238643deaa65db860bfeabf7                                                 |
-| protected        | False                                                                            |
-| size             | 16338944                                                                         |
-| status           | active                                                                           |
-| tags             | []                                                                               |
-| updated_at       | 2020-07-30T09:54:37Z                                                             |
-| virtual_size     | Not available                                                                    |
-| visibility       | public                                                                           |
-+------------------+----------------------------------------------------------------------------------+
+os@controller:~$ openstack image create --file cirros-0.5.1-x86_64-disk.img --disk-format qcow2 --container-format bare --public cirros-0.5.1-x86_64
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field            | Value                                                                                                                                                                                      |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| checksum         | 1d3062cd89af34e419f7100277f38b2b                                                                                                                                                           |
+| container_format | bare                                                                                                                                                                                       |
+| created_at       | 2020-08-24T17:22:01Z                                                                                                                                                                       |
+| disk_format      | qcow2                                                                                                                                                                                      |
+| file             | /v2/images/1211d636-99bc-40f6-a139-58a7502b30e9/file                                                                                                                                       |
+| id               | 1211d636-99bc-40f6-a139-58a7502b30e9                                                                                                                                                       |
+| min_disk         | 0                                                                                                                                                                                          |
+| min_ram          | 0                                                                                                                                                                                          |
+| name             | cirros-0.5.1-x86_64                                                                                                                                                                        |
+| owner            | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                                                           |
+| properties       | os_hash_algo='sha512', os_hash_value='553d220ed58cfee7dafe003c446a9f197ab5edf8ffc09396c74187cf83873c877e7ae041cb80f3b91489acf687183adcd689b53b38e3ddd22e627e7f98a09c46', os_hidden='False' |
+| protected        | False                                                                                                                                                                                      |
+| schema           | /v2/schemas/image                                                                                                                                                                          |
+| size             | 16338944                                                                                                                                                                                   |
+| status           | active                                                                                                                                                                                     |
+| tags             |                                                                                                                                                                                            |
+| updated_at       | 2020-08-24T17:22:01Z                                                                                                                                                                       |
+| virtual_size     | None                                                                                                                                                                                       |
+| visibility       | public                                                                                                                                                                                     |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 - Confirm upload of the image and validate attributes:
 ```
-$ glance image-list
+$ openstack image list
 
-os@controller:~$ glance image-list
-+--------------------------------------+---------------------+
-| ID                                   | Name                |
-+--------------------------------------+---------------------+
-| dd072d40-6881-40ba-a9ef-dc01882ca753 | cirros-0.5.1-x86_64 |
-+--------------------------------------+---------------------+
+os@controller:~$ openstack image list
++--------------------------------------+---------------------+--------+
+| ID                                   | Name                | Status |
++--------------------------------------+---------------------+--------+
+| 1211d636-99bc-40f6-a139-58a7502b30e9 | cirros-0.5.1-x86_64 | active |
++--------------------------------------+---------------------+--------+
 ```
 
 
