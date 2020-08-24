@@ -38,14 +38,14 @@ e.g.
 openstack user create --domain tuc --password-prompt placement
 
 os@controller:~$ openstack user create --domain tuc --password-prompt placement
-User Password:
-Repeat User Password:
+User Password: tuckn2020
+Repeat User Password: tuckn2020
 +---------------------+----------------------------------+
 | Field               | Value                            |
 +---------------------+----------------------------------+
 | domain_id           | tuc                              |
 | enabled             | True                             |
-| id                  | dbed7c5ab7d04b70961a06a81c81ae2a |
+| id                  | 8ec968ead4284ea19b2aab8392b6e88f |
 | name                | placement                        |
 | options             | {}                               |
 | password_expires_at | None                             |
@@ -67,7 +67,7 @@ os@controller:~$ openstack service create --name placement --description "Placem
 +-------------+----------------------------------+
 | description | Placement Service API            |
 | enabled     | True                             |
-| id          | fe7fb0c8102845c4824d46ae7f092807 |
+| id          | 9da1ce42da294e80b20f0ac504748de4 |
 | name        | placement                        |
 | type        | placement                        |
 +-------------+----------------------------------+
@@ -80,52 +80,52 @@ $ openstack endpoint create --region RegionOne placement internal http://control
 $ openstack endpoint create --region RegionOne placement admin http://controller:8778
 
 e.g.
-openstack endpoint create --region TUCKN placement public http://controller:8778
-openstack endpoint create --region TUCKN placement internal http://controller:8778
-openstack endpoint create --region TUCKN placement admin http://controller:8778
+openstack endpoint create --region TUCKN placement public http://10.10.0.21:8778
+openstack endpoint create --region TUCKN placement internal http://10.10.0.21:8778
+openstack endpoint create --region TUCKN placement admin http://10.10.0.21:8778
 
 
-os@controller:~$ openstack endpoint create --region TUCKN placement public http://controller:8778
+os@controller:~$ openstack endpoint create --region TUCKN placement public http://10.10.0.21:8778
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | e345bbe786f54d729e8cbe89900e3688 |
+| id           | 191a85740052439889adc05406467527 |
 | interface    | public                           |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | fe7fb0c8102845c4824d46ae7f092807 |
+| service_id   | 9da1ce42da294e80b20f0ac504748de4 |
 | service_name | placement                        |
 | service_type | placement                        |
-| url          | http://controller:8778           |
+| url          | http://10.10.0.21:8778           |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN placement internal http://controller:8778
+os@controller:~$ openstack endpoint create --region TUCKN placement internal http://10.10.0.21:8778
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 51c151069ba645cba5a7c57ba86e606b |
+| id           | f206f89cf83a40008bb34d5aab2ef1be |
 | interface    | internal                         |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | fe7fb0c8102845c4824d46ae7f092807 |
+| service_id   | 9da1ce42da294e80b20f0ac504748de4 |
 | service_name | placement                        |
 | service_type | placement                        |
-| url          | http://controller:8778           |
+| url          | http://10.10.0.21:8778           |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN placement admin http://controller:8778
+os@controller:~$ openstack endpoint create --region TUCKN placement admin http://10.10.0.21:8778
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | d6e1b20402234b7ca6211f1343c6a590 |
+| id           | 621173d7d0c94dd394d2fb5dfee4f812 |
 | interface    | admin                            |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | fe7fb0c8102845c4824d46ae7f092807 |
+| service_id   | 9da1ce42da294e80b20f0ac504748de4 |
 | service_name | placement                        |
 | service_type | placement                        |
-| url          | http://controller:8778           |
+| url          | http://10.10.0.21:8778           |
 +--------------+----------------------------------+
 ```
 
@@ -138,7 +138,7 @@ os@controller:~$ openstack endpoint create --region TUCKN placement admin http:/
 ```
 [placement_database]
 # ...
-connection = mysql+pymysql://placement:tuckn2020@controller/placement
+connection = mysql+pymysql://placement:tuckn2020@10.10.0.21/placement
 
 [api]
 # ...
@@ -146,8 +146,8 @@ auth_strategy = keystone
 
 [keystone_authtoken]
 # ...
-auth_url = http://controller:5000/v3
-memcached_servers = controller:11211
+auth_url = http://10.10.0.21:5000/v3
+memcached_servers = 10.10.0.21:11211
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
