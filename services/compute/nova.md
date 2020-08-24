@@ -84,9 +84,9 @@ api_servers = http://10.10.0.21:9292
 [key_manager]
 [keystone]
 [keystone_authtoken]
-www_authenticate_uri = http://controller:5000/
-auth_url = http://controller:5000/
-memcached_servers = controller:11211
+www_authenticate_uri = http://10.10.0.21:5000/
+auth_url = http://10.10.0.21:5000/
+memcached_servers = 10.10.0.21:11211
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -108,8 +108,8 @@ live_migration_with_native_tls = false
 [metrics]
 [mks]
 [neutron]
-url = http://controller:9696
-auth_url = http://controller:5000
+url = http://10.10.0.21:9696
+auth_url = http://10.10.0.21:5000
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -137,7 +137,7 @@ project_domain_name = TUC
 project_name = service
 auth_type = password
 user_domain_name = TUC
-auth_url = http://controller:5000/v3
+auth_url = http://10.10.0.21:5000/v3
 username = placement
 password = tuckn2020
 
@@ -187,7 +187,8 @@ os@controller:~$ openstack compute service list --service nova-compute
 +----+--------------+-------------------------------+------+---------+-------+----------------------------+
 | ID | Binary       | Host                          | Zone | Status  | State | Updated At                 |
 +----+--------------+-------------------------------+------+---------+-------+----------------------------+
-|  9 | nova-compute | compute01.etit.tu-chemnitz.de | nova | enabled | up    | 2020-08-04T16:33:40.000000 |
+| 10 | nova-compute | compute01.etit.tu-chemnitz.de | nova | enabled | up    | 2020-08-24T18:13:49.000000 |
+| 11 | nova-compute | compute02.etit.tu-chemnitz.de | nova | enabled | up    | 2020-08-24T18:13:51.000000 |
 +----+--------------+-------------------------------+------+---------+-------+----------------------------+
 ```
 
@@ -199,10 +200,12 @@ os@controller:~$ openstack compute service list --service nova-compute
 root@controller:~# su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
 Found 2 cell mappings.
 Skipping cell0 since it does not contain hosts.
-Getting computes from cell 'cell1': 2d48d622-1173-49d8-a0fa-72551c125c75
-Checking host mapping for compute host 'compute01.etit.tu-chemnitz.de': ef8852b1-859d-4525-8dab-462287fcc25c
-Creating host mapping for compute host 'compute01.etit.tu-chemnitz.de': ef8852b1-859d-4525-8dab-462287fcc25c
-Found 1 unmapped computes in cell: 2d48d622-1173-49d8-a0fa-72551c125c75
+Getting computes from cell 'cell1': b90569c8-96ac-4b2a-8c04-8d50adfe4465
+Checking host mapping for compute host 'compute01.etit.tu-chemnitz.de': b755b8b1-363f-40dc-ba6e-8b55dd3a4767
+Creating host mapping for compute host 'compute01.etit.tu-chemnitz.de': b755b8b1-363f-40dc-ba6e-8b55dd3a4767
+Checking host mapping for compute host 'compute02.etit.tu-chemnitz.de': 97582edb-4ab7-4190-ab14-243349e43c67
+Creating host mapping for compute host 'compute02.etit.tu-chemnitz.de': 97582edb-4ab7-4190-ab14-243349e43c67
+Found 2 unmapped computes in cell: b90569c8-96ac-4b2a-8c04-8d50adfe4465
 ```
 
 ### Verify operation
@@ -217,13 +220,14 @@ $ openstack compute service list
 
 ```example output:```
 os@controller:~$ openstack compute service list
-+----+----------------+-------------------------------+----------+---------+-------+----------------------------+
-| ID | Binary         | Host                          | Zone     | Status  | State | Updated At                 |
-+----+----------------+-------------------------------+----------+---------+-------+----------------------------+
-|  4 | nova-conductor | controller                    | internal | enabled | up    | 2020-08-04T16:54:10.000000 |
-|  8 | nova-scheduler | controller                    | internal | enabled | up    | 2020-08-04T16:54:05.000000 |
-|  9 | nova-compute   | compute01.etit.tu-chemnitz.de | nova     | enabled | up    | 2020-08-04T16:54:10.000000 |
-+----+----------------+-------------------------------+----------+---------+-------+----------------------------+
++----+----------------+--------------------------------+----------+---------+-------+----------------------------+
+| ID | Binary         | Host                           | Zone     | Status  | State | Updated At                 |
++----+----------------+--------------------------------+----------+---------+-------+----------------------------+
+|  7 | nova-conductor | controller.etit.tu-chemnitz.de | internal | enabled | up    | 2020-08-24T18:14:49.000000 |
+|  8 | nova-scheduler | controller.etit.tu-chemnitz.de | internal | enabled | up    | 2020-08-24T18:14:49.000000 |
+| 10 | nova-compute   | compute01.etit.tu-chemnitz.de  | nova     | enabled | up    | 2020-08-24T18:14:49.000000 |
+| 11 | nova-compute   | compute02.etit.tu-chemnitz.de  | nova     | enabled | up    | 2020-08-24T18:14:51.000000 |
++----+----------------+--------------------------------+----------+---------+-------+----------------------------+
 ```
 - List API endpoints in the Identity service to verify connectivity with the Identity service:
 ```
@@ -234,33 +238,33 @@ os@controller:~$ openstack catalog list
 +-----------+-----------+-----------------------------------------+
 | Name      | Type      | Endpoints                               |
 +-----------+-----------+-----------------------------------------+
-| keystone  | identity  | TUCKN                                   |
-|           |           |   public: http://controller:5000/v3/    |
-|           |           | TUCKN                                   |
-|           |           |   internal: http://controller:5000/v3/  |
-|           |           | TUCKN                                   |
-|           |           |   admin: http://controller:5000/v3/     |
-|           |           |                                         |
 | nova      | compute   | TUCKN                                   |
-|           |           |   internal: http://controller:8774/v2.1 |
+|           |           |   internal: http://10.10.0.21:8774/v2.1 |
 |           |           | TUCKN                                   |
-|           |           |   admin: http://controller:8774/v2.1    |
+|           |           |   public: http://10.10.0.21:8774/v2.1   |
 |           |           | TUCKN                                   |
-|           |           |   public: http://controller:8774/v2.1   |
-|           |           |                                         |
-| glance    | image     | TUCKN                                   |
-|           |           |   admin: http://controller:9292         |
-|           |           | TUCKN                                   |
-|           |           |   internal: http://controller:9292      |
-|           |           | TUCKN                                   |
-|           |           |   public: http://controller:9292        |
+|           |           |   admin: http://10.10.0.21:8774/v2.1    |
 |           |           |                                         |
 | placement | placement | TUCKN                                   |
-|           |           |   internal: http://controller:8778      |
+|           |           |   public: http://10.10.0.21:8778        |
 |           |           | TUCKN                                   |
-|           |           |   admin: http://controller:8778         |
+|           |           |   admin: http://10.10.0.21:8778         |
 |           |           | TUCKN                                   |
-|           |           |   public: http://controller:8778        |
+|           |           |   internal: http://10.10.0.21:8778      |
+|           |           |                                         |
+| keystone  | identity  | TUCKN                                   |
+|           |           |   public: http://10.10.0.21:5000/v3/    |
+|           |           | TUCKN                                   |
+|           |           |   admin: http://10.10.0.21:5000/v3/     |
+|           |           | TUCKN                                   |
+|           |           |   internal: http://10.10.0.21:5000/v3/  |
+|           |           |                                         |
+| glance    | image     | TUCKN                                   |
+|           |           |   public: http://10.10.0.21:9292        |
+|           |           | TUCKN                                   |
+|           |           |   admin: http://10.10.0.21:9292         |
+|           |           | TUCKN                                   |
+|           |           |   internal: http://10.10.0.21:9292      |
 |           |           |                                         |
 +-----------+-----------+-----------------------------------------+
 ```
@@ -273,7 +277,7 @@ os@controller:~$ openstack image list
 +--------------------------------------+---------------------+--------+
 | ID                                   | Name                | Status |
 +--------------------------------------+---------------------+--------+
-| dd072d40-6881-40ba-a9ef-dc01882ca753 | cirros-0.5.1-x86_64 | active |
+| 1211d636-99bc-40f6-a139-58a7502b30e9 | cirros-0.5.1-x86_64 | active |
 +--------------------------------------+---------------------+--------+
 ```
 

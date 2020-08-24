@@ -38,7 +38,6 @@ GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'tuckn2020';
 
 GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' IDENTIFIED BY 'tuckn2020';
 GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'tuckn2020';
-
 ```
 - Exit the database access client.
 
@@ -53,14 +52,14 @@ $ . admin-openrc
 $ openstack user create --domain tuc --password-prompt nova
 
 os@controller:~$ openstack user create --domain tuc --password-prompt nova
-User Password:
-Repeat User Password:
+User Password: tuckn2020
+Repeat User Password: tuckn2020
 +---------------------+----------------------------------+
 | Field               | Value                            |
 +---------------------+----------------------------------+
 | domain_id           | tuc                              |
 | enabled             | True                             |
-| id                  | cb3d9d3800d24076ba2d2e88d678b3d5 |
+| id                  | 864e642384c94248aa458ffdc360fd1c |
 | name                | nova                             |
 | options             | {}                               |
 | password_expires_at | None                             |
@@ -80,7 +79,7 @@ os@controller:~$ openstack service create --name nova --description "OpenStack C
 +-------------+----------------------------------+
 | description | OpenStack Compute Service        |
 | enabled     | True                             |
-| id          | 7aa17937325c4cdab52175172c9601dc |
+| id          | 9946822b1ecf4dc6bb261d776dc7eb05 |
 | name        | nova                             |
 | type        | compute                          |
 +-------------+----------------------------------+
@@ -93,52 +92,52 @@ $ openstack endpoint create --region RegionOne compute internal http://controlle
 $ openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1
 
 e.g.
-openstack endpoint create --region TUCKN compute public http://controller:8774/v2.1
-openstack endpoint create --region TUCKN compute internal http://controller:8774/v2.1
-openstack endpoint create --region TUCKN compute admin http://controller:8774/v2.1
+openstack endpoint create --region TUCKN compute public http://10.10.0.21:8774/v2.1
+openstack endpoint create --region TUCKN compute internal http://10.10.0.21:8774/v2.1
+openstack endpoint create --region TUCKN compute admin http://10.10.0.21:8774/v2.1
 
 output:
-os@controller:~$ openstack endpoint create --region TUCKN compute public http://controller:8774/v2.1
+os@controller:~$ openstack endpoint create --region TUCKN compute public http://10.10.0.21:8774/v2.1
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | decf14f5b7464159b86fe702afabbb1d |
+| id           | 5bc1262d9d624f59aad9d2876c99da01 |
 | interface    | public                           |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | 7aa17937325c4cdab52175172c9601dc |
+| service_id   | 9946822b1ecf4dc6bb261d776dc7eb05 |
 | service_name | nova                             |
 | service_type | compute                          |
-| url          | http://controller:8774/v2.1      |
+| url          | http://10.10.0.21:8774/v2.1      |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN compute internal http://controller:8774/v2.1
+os@controller:~$ openstack endpoint create --region TUCKN compute internal http://10.10.0.21:8774/v2.1
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 08f6f6f00d124250bce13f7b25bce419 |
+| id           | 076ea1c007304503ae082e11c3b1cffa |
 | interface    | internal                         |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | 7aa17937325c4cdab52175172c9601dc |
+| service_id   | 9946822b1ecf4dc6bb261d776dc7eb05 |
 | service_name | nova                             |
 | service_type | compute                          |
-| url          | http://controller:8774/v2.1      |
+| url          | http://10.10.0.21:8774/v2.1      |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN compute admin http://controller:8774/v2.1
+os@controller:~$ openstack endpoint create --region TUCKN compute admin http://10.10.0.21:8774/v2.1
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 74dcf8d5f019469d8aae2570c1dd84e9 |
+| id           | ba5aa195df9240b69fcbab63569527ef |
 | interface    | admin                            |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | 7aa17937325c4cdab52175172c9601dc |
+| service_id   | 9946822b1ecf4dc6bb261d776dc7eb05 |
 | service_name | nova                             |
 | service_type | compute                          |
-| url          | http://controller:8774/v2.1      |
+| url          | http://10.10.0.21:8774/v2.1      |
 +--------------+----------------------------------+
 ```
 
@@ -151,15 +150,15 @@ os@controller:~$ openstack endpoint create --region TUCKN compute admin http://c
 ```bash
 [api_database]
 # ...
-connection = mysql+pymysql://nova:tuckn2020@controller/nova_api
+connection = mysql+pymysql://nova:tuckn2020@10.10.0.21/nova_api
 
 [database]
 # ...
-connection = mysql+pymysql://nova:tuckn2020@controller/nova
+connection = mysql+pymysql://nova:tuckn2020@10.10.0.21/nova
 
 [DEFAULT]
 # ...
-transport_url = rabbit://openstack:tuckn2020@controller:5672/
+transport_url = rabbit://openstack:tuckn2020@10.10.0.21:5672/
 # ...
 my_ip = 10.10.0.21
 
@@ -172,9 +171,9 @@ auth_strategy = keystone
 
 [keystone_authtoken]
 # ...
-www_authenticate_uri = http://controller:5000/
-auth_url = http://controller:5000/
-memcached_servers = controller:11211
+www_authenticate_uri = http://10.10.0.21:5000/
+auth_url = http://10.10.0.21:5000/
+memcached_servers = 10.10.0.21:11211
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -191,11 +190,11 @@ novncproxy_base_url = http://10.10.0.21:6080/vnc_auto.html
 
 [glance]
 # ...
-api_servers = http://controller:9292
+api_servers = http://10.10.0.21:9292
 
 [neutron]
 # ...
-auth_url = http://controller:5000
+auth_url = http://10.10.0.21:5000
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -215,7 +214,7 @@ project_domain_name = TUC
 project_name = service
 auth_type = password
 user_domain_name = TUC
-auth_url = http://controller:5000/v3
+auth_url = http://10.10.0.21:5000/v3
 username = placement
 password = tuckn2020
 ```
@@ -233,7 +232,7 @@ password = tuckn2020
 # su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
 
 root@controller:~# su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
-2d48d622-1173-49d8-a0fa-72551c125c75
+b90569c8-96ac-4b2a-8c04-8d50adfe4465
 ```
 - Populate the ```nova``` database:
 ```
@@ -247,8 +246,8 @@ root@controller:~# su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 +-------+--------------------------------------+------------------------------------------+-------------------------------------------------+----------+
 |  Name |                 UUID                 |              Transport URL               |               Database Connection               | Disabled |
 +-------+--------------------------------------+------------------------------------------+-------------------------------------------------+----------+
-| cell0 | 00000000-0000-0000-0000-000000000000 |                  none:/                  | mysql+pymysql://nova:****@controller/nova_cell0 |  False   |
-| cell1 | 2d48d622-1173-49d8-a0fa-72551c125c75 | rabbit://openstack:****@controller:5672/ |    mysql+pymysql://nova:****@controller/nova    |  False   |
+| cell0 | 00000000-0000-0000-0000-000000000000 |                  none:/                  | mysql+pymysql://nova:****@10.10.0.21/nova_cell0 |  False   |
+| cell1 | b90569c8-96ac-4b2a-8c04-8d50adfe4465 | rabbit://openstack:****@10.10.0.21:5672/ |    mysql+pymysql://nova:****@10.10.0.21/nova    |  False   |
 +-------+--------------------------------------+------------------------------------------+-------------------------------------------------+----------+
 ```
 ### Finalize installation
