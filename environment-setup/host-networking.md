@@ -64,9 +64,9 @@ ff02::2 ip6-allrouters
 10.10.0.13      switch03
 10.10.0.14      switch04
 
-10.10.0.21      controller
-10.10.0.31      compute01
-10.10.0.32      compute02
+10.10.0.21      controller.etit.tu-chemnitz.de
+10.10.0.31      compute01.etit.tu-chemnitz.de
+10.10.0.32      compute02.etit.tu-chemnitz.de
 ```
 
 [Previous](../initial-setup/ssh.md#setup-ssh-keys)
