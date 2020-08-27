@@ -42,3 +42,6 @@
 
 ### OpenStack Dashboard
 [Horizon](services/controller/horizon.md#openstack-dashboard-horizon)
+
+# OpenDaylight Setup for OpenStack
+[Install OpenDaylight](opendaylight.md)
