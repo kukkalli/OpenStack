@@ -33,14 +33,14 @@ $ . admin-openrc
 $ openstack user create --domain tuc --password-prompt neutron
 
 os@controller:~$ openstack user create --domain tuc --password-prompt neutron
-User Password:
-Repeat User Password:
+User Password: tuckn2020
+Repeat User Password: tuckn2020
 +---------------------+----------------------------------+
 | Field               | Value                            |
 +---------------------+----------------------------------+
 | domain_id           | tuc                              |
 | enabled             | True                             |
-| id                  | 7d0bd4d23abd4e2b947f43c0fa62fb81 |
+| id                  | c5fb18bdca7e42eb9fe47ad2393a3e98 |
 | name                | neutron                          |
 | options             | {}                               |
 | password_expires_at | None                             |
@@ -60,7 +60,7 @@ os@controller:~$ openstack service create --name neutron --description "OpenStac
 +-------------+----------------------------------+
 | description | OpenStack Networking Service     |
 | enabled     | True                             |
-| id          | c63a5507a9d549bc920a9d8def4b6d14 |
+| id          | 169e27e7d5aa43c8a60cdaa0b7646ba6 |
 | name        | neutron                          |
 | type        | network                          |
 +-------------+----------------------------------+
@@ -73,52 +73,52 @@ $ openstack endpoint create --region RegionOne network internal http://controlle
 $ openstack endpoint create --region RegionOne network admin http://controller:9696
 
 e.g.
-openstack endpoint create --region TUCKN network public http://controller:9696
-openstack endpoint create --region TUCKN network internal http://controller:9696
-openstack endpoint create --region TUCKN network admin http://controller:9696
+openstack endpoint create --region TUCKN network public http://10.10.0.21:9696
+openstack endpoint create --region TUCKN network internal http://10.10.0.21:9696
+openstack endpoint create --region TUCKN network admin http://10.10.0.21:9696
 
 output:
-os@controller:~$ openstack endpoint create --region TUCKN network public http://controller:9696
+os@controller:~$ openstack endpoint create --region TUCKN network public http://10.10.0.21:9696
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | f630b9bc6baf4f9fa95556c6df6e06d8 |
+| id           | 0a8913b19aaf4df8abf9335bc2da6be1 |
 | interface    | public                           |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | c63a5507a9d549bc920a9d8def4b6d14 |
+| service_id   | 169e27e7d5aa43c8a60cdaa0b7646ba6 |
 | service_name | neutron                          |
 | service_type | network                          |
-| url          | http://controller:9696           |
+| url          | http://10.10.0.21:9696           |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN network internal http://controller:9696
+os@controller:~$ openstack endpoint create --region TUCKN network internal http://10.10.0.21:9696
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 2422cb7c3f864cb796403aab0efa7042 |
+| id           | 32d6b23995fa4a94a19d1f1d75a6b5fd |
 | interface    | internal                         |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | c63a5507a9d549bc920a9d8def4b6d14 |
+| service_id   | 169e27e7d5aa43c8a60cdaa0b7646ba6 |
 | service_name | neutron                          |
 | service_type | network                          |
-| url          | http://controller:9696           |
+| url          | http://10.10.0.21:9696           |
 +--------------+----------------------------------+
-os@controller:~$ openstack endpoint create --region TUCKN network admin http://controller:9696
+os@controller:~$ openstack endpoint create --region TUCKN network admin http://10.10.0.21:9696
 +--------------+----------------------------------+
 | Field        | Value                            |
 +--------------+----------------------------------+
 | enabled      | True                             |
-| id           | 6de2d130b96f4fd4944c4c11d43098e4 |
+| id           | 8e20e0e645664ef6ae36adc5fd28b20b |
 | interface    | admin                            |
 | region       | TUCKN                            |
 | region_id    | TUCKN                            |
-| service_id   | c63a5507a9d549bc920a9d8def4b6d14 |
+| service_id   | 169e27e7d5aa43c8a60cdaa0b7646ba6 |
 | service_name | neutron                          |
 | service_type | network                          |
-| url          | http://controller:9696           |
+| url          | http://10.10.0.21:9696           |
 +--------------+----------------------------------+
 ```
 
@@ -143,18 +143,18 @@ notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
 global_physnet_mtu = 9000
 dhcp_agents_per_network = 2
-transport_url = rabbit://openstack:tuckn2020@controller
+transport_url = rabbit://openstack:tuckn2020@10.10.0.21
 
 [agent]
 [cors]
 [database]
-connection = mysql+pymysql://neutron:tuckn2020@controller/neutron
+connection = mysql+pymysql://neutron:tuckn2020@10.10.0.21/neutron
 
 [ironic]
 [keystone_authtoken]
-www_authenticate_uri = http://controller:5000
-auth_url = http://controller:5000
-memcached_servers = controller:11211
+www_authenticate_uri = http://10.10.0.21:5000
+auth_url = http://10.10.0.21:5000
+memcached_servers = 10.10.0.21:11211
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -163,7 +163,7 @@ username = neutron
 password = tuckn2020
 
 [nova]
-auth_url = http://controller:5000
+auth_url = http://10.10.0.21:5000
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -265,7 +265,7 @@ The updated ```dhcp_agent.ini``` file can be found at: [dhcp_agent.ini](dhcp_age
 - Edit the ```/etc/neutron/metadata_agent.ini``` file and complete the following actions:
 ```bash
 [DEFAULT]
-nova_metadata_host = controller
+nova_metadata_host = 10.10.0.21
 metadata_proxy_shared_secret = tuckn2020
 
 [agent]
@@ -297,27 +297,19 @@ The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](
 # service nova-api restart
 # service neutron-server restart
 # service neutron-openvswitch-agent restart
-# service neutron-l3-agent restart
-
-# service neutron-metering-agent restart
 # service neutron-dhcp-agent restart
 # service neutron-metadata-agent restart
+# service neutron-l3-agent restart
+# service neutron-metering-agent restart
 
 ```Copy below```
 service nova-api restart
 service neutron-server restart
 service neutron-openvswitch-agent restart
-service neutron-l3-agent restart
-service neutron-metering-agent restart
-
-
 service neutron-dhcp-agent restart
 service neutron-metadata-agent restart
-
-service neutron-server start
-service neutron-openvswitch-agent start
-service neutron-l3-agent start
-service neutron-metering-agent start
+service neutron-l3-agent restart
+service neutron-metering-agent restart
 ```
 
 

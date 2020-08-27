@@ -16,20 +16,20 @@ core_plugin = ml2
 notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
 global_physnet_mtu = 9000
-transport_url = rabbit://openstack:tuckn2020@controller
+transport_url = rabbit://openstack:tuckn2020@10.10.0.21
 
 [agent]
 root_helper = "sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf"
 
 [cors]
 [database]
-connection = mysql+pymysql://neutron:tuckn2020@controller/neutron
+connection = mysql+pymysql://neutron:tuckn2020@10.10.0.21/neutron
 
 [ironic]
 [keystone_authtoken]
-www_authenticate_uri = http://controller:5000
-auth_url = http://controller:5000
-memcached_servers = controller:11211
+www_authenticate_uri = http://10.10.0.21:5000
+auth_url = http://10.10.0.21:5000
+memcached_servers = 10.10.0.21:11211
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -38,7 +38,7 @@ username = neutron
 password = tuckn2020
 
 [nova]
-auth_url = http://controller:5000
+auth_url = http://10.10.0.21:5000
 auth_type = password
 project_domain_name = TUC
 user_domain_name = TUC
@@ -96,7 +96,7 @@ $ . admin-openrc
 $ openstack extension list --network
 
 ```example output:```
-os@compute01:~$ openstack extension list --network
+os@controller:~$ openstack extension list --network
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Name                                                                                                                                                           | Alias                                 | Description                                                                                                                                              |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -162,100 +162,133 @@ os@compute01:~$ openstack extension list --network
 ```
 - List service components to verify successful launch and registration of each process:
 ```
-$ openstack network agent list
+$ openstack network agent list --sort-column Host --sort-column Binary
 
 ```example output:```
-os@compute01:~$ openstack network agent list
+os@controller:~$ openstack network agent list --sort-column Host --sort-column Binary
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
 | ID                                   | Agent Type         | Host                           | Availability Zone | Alive | State | Binary                    |
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
-| 107fee0e-d7d3-48e7-ad22-a3274c6d7de8 | Metadata agent     | controller                     | None              | XXX   | UP    | neutron-metadata-agent    |
-| 5f6ccd5b-5416-46f7-9e61-b70029df0e13 | Open vSwitch agent | controller                     | None              | XXX   | UP    | neutron-openvswitch-agent |
-| 61b9e129-0da4-44a8-8bdf-6a157325edb2 | DHCP agent         | controller.etit.tu-chemnitz.de | nova              | :-)   | UP    | neutron-dhcp-agent        |
-| 80f0759e-47e3-4d93-a5f2-1c9f43fc20e0 | Metering agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metering-agent    |
-| 984916b0-d178-4d37-b439-048e9ac87b2e | Open vSwitch agent | compute01.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
-| cc18b3eb-c420-45e4-87f8-a62c96fc1c92 | Open vSwitch agent | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-openvswitch-agent |
-| d4ca5f8a-57c1-43e8-b57f-301d6c30f6c1 | Open vSwitch agent | compute02.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
-| d7e7e15c-f688-4e30-a5e6-9982689db0b5 | DHCP agent         | controller                     | nova              | XXX   | UP    | neutron-dhcp-agent        |
-| e8c62400-4dee-4f9f-bb0b-9188d3b3d667 | Metadata agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metadata-agent    |
-| f879412f-0566-44ee-9d50-9115f3ce0726 | Metering agent     | controller                     | None              | XXX   | UP    | neutron-metering-agent    |
+| 68e4f58f-c36f-4101-8565-e69dfbca40ab | Open vSwitch agent | compute01.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
+| 1c1197b9-a7fd-4a98-8cf3-fbd30b034e16 | Open vSwitch agent | compute02.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
+| c101161d-0e7c-498e-86e3-f46c50e963ee | DHCP agent         | controller.etit.tu-chemnitz.de | nova              | :-)   | UP    | neutron-dhcp-agent        |
+| 00b6c399-9ec9-4325-a27b-47dfaf939736 | L3 agent           | controller.etit.tu-chemnitz.de | nova              | :-)   | UP    | neutron-l3-agent          |
+| 06e80c97-7556-473f-9438-47274db774a4 | Metadata agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metadata-agent    |
+| 3eb5fec7-b7c0-4652-9149-ab6a45ad8c96 | Metering agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metering-agent    |
+| 890fbf39-f4cb-4d0c-ae27-8ef02c080453 | Open vSwitch agent | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-openvswitch-agent |
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
 ```
 
 ### Create initial networks
 ```
-$ openstack network create --share --provider-physical-network winlab31 --provider-network-type flat WinLab31
+$ openstack network create --share --provider-physical-network tuc11 --provider-network-type flat "TUC11-Network"
 
 ```example output:```
-native@stable-control-01:~$ openstack network create --share --provider-physical-network winlab31 --provider-network-type flat WinLab31
-+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Field                     | Value                                                                                                                                                  |
-+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| admin_state_up            | UP                                                                                                                                                     |
-| availability_zone_hints   |                                                                                                                                                        |
-| availability_zones        |                                                                                                                                                        |
-| created_at                | 2020-08-17T13:43:05Z                                                                                                                                   |
-| description               |                                                                                                                                                        |
-| dns_domain                | None                                                                                                                                                   |
-| id                        | a2a6b774-88ef-477f-bd14-23e6ba73deef                                                                                                                   |
-| ipv4_address_scope        | None                                                                                                                                                   |
-| ipv6_address_scope        | None                                                                                                                                                   |
-| is_default                | None                                                                                                                                                   |
-| is_vlan_transparent       | None                                                                                                                                                   |
-| location                  | cloud='', project.domain_id=, project.domain_name='Stable', project.id='301ec83caf7343f1bd1639a932efbdcb', project.name='admin', region_name='', zone= |
-| mtu                       | 9000                                                                                                                                                   |
-| name                      | WinLab31                                                                                                                                               |
-| port_security_enabled     | True                                                                                                                                                   |
-| project_id                | 301ec83caf7343f1bd1639a932efbdcb                                                                                                                       |
-| provider:network_type     | flat                                                                                                                                                   |
-| provider:physical_network | winlab31                                                                                                                                               |
-| provider:segmentation_id  | None                                                                                                                                                   |
-| qos_policy_id             | None                                                                                                                                                   |
-| revision_number           | 1                                                                                                                                                      |
-| router:external           | Internal                                                                                                                                               |
-| segments                  | None                                                                                                                                                   |
-| shared                    | True                                                                                                                                                   |
-| status                    | ACTIVE                                                                                                                                                 |
-| subnets                   |                                                                                                                                                        |
-| tags                      |                                                                                                                                                        |
-| updated_at                | 2020-08-17T13:43:05Z                                                                                                                                   |
-+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+os@controller:~$ openstack network create --share --provider-physical-network tuc11 --provider-network-type flat "TUC11-Network"
++---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                     | Value                                                                                                                                               |
++---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| admin_state_up            | UP                                                                                                                                                  |
+| availability_zone_hints   |                                                                                                                                                     |
+| availability_zones        |                                                                                                                                                     |
+| created_at                | 2020-08-25T09:27:00Z                                                                                                                                |
+| description               |                                                                                                                                                     |
+| dns_domain                | None                                                                                                                                                |
+| id                        | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| ipv4_address_scope        | None                                                                                                                                                |
+| ipv6_address_scope        | None                                                                                                                                                |
+| is_default                | False                                                                                                                                               |
+| is_vlan_transparent       | None                                                                                                                                                |
+| location                  | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| mtu                       | 9000                                                                                                                                                |
+| name                      | TUC11-Network                                                                                                                                       |
+| port_security_enabled     | True                                                                                                                                                |
+| project_id                | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| provider:network_type     | flat                                                                                                                                                |
+| provider:physical_network | tuc11                                                                                                                                               |
+| provider:segmentation_id  | None                                                                                                                                                |
+| qos_policy_id             | None                                                                                                                                                |
+| revision_number           | 1                                                                                                                                                   |
+| router:external           | Internal                                                                                                                                            |
+| segments                  | None                                                                                                                                                |
+| shared                    | True                                                                                                                                                |
+| status                    | ACTIVE                                                                                                                                              |
+| subnets                   |                                                                                                                                                     |
+| tags                      |                                                                                                                                                     |
+| updated_at                | 2020-08-25T09:27:00Z                                                                                                                                |
++---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 ### Create a IPv4 subnet on the provider network.
 
 ```
-$ openstack subnet create --subnet-range 10.31.0.0/16 --gateway 10.31.0.1 --network WinLab31 --allocation-pool start=10.31.4.0,end=10.31.4.255 --dns-nameserver 8.8.4.4 WinLab31-Subnet-v4
+$ openstack subnet create --subnet-range 10.11.1.0/16 --gateway 10.11.0.1 --network TUC11-Network --allocation-pool start=10.11.1.0,end=10.11.2.255 --dns-nameserver 1.1.1.1 --dns-nameserver 8.8.8.8 TUC-Subnet-v4
 
 ```example output:```
-native@stable-control-01:~$ openstack subnet create --subnet-range 10.31.0.0/16 --gateway 10.31.0.1 --network WinLab31 --allocation-pool start=10.31.4.0,end=10.31.4.255 --dns-nameserver 8.8.4.4 WinLab31-Subnet-v4
-+-------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Field             | Value                                                                                                                                                  |
-+-------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| allocation_pools  | 10.31.4.0-10.31.4.255                                                                                                                                  |
-| cidr              | 10.31.0.0/16                                                                                                                                           |
-| created_at        | 2020-08-17T13:51:52Z                                                                                                                                   |
-| description       |                                                                                                                                                        |
-| dns_nameservers   | 8.8.4.4                                                                                                                                                |
-| enable_dhcp       | True                                                                                                                                                   |
-| gateway_ip        | 10.31.0.1                                                                                                                                              |
-| host_routes       |                                                                                                                                                        |
-| id                | 80c5646e-e585-4c58-8624-e7834d354e19                                                                                                                   |
-| ip_version        | 4                                                                                                                                                      |
-| ipv6_address_mode | None                                                                                                                                                   |
-| ipv6_ra_mode      | None                                                                                                                                                   |
-| location          | cloud='', project.domain_id=, project.domain_name='Stable', project.id='301ec83caf7343f1bd1639a932efbdcb', project.name='admin', region_name='', zone= |
-| name              | WinLab31-Subnet-v4                                                                                                                                     |
-| network_id        | a2a6b774-88ef-477f-bd14-23e6ba73deef                                                                                                                   |
-| prefix_length     | None                                                                                                                                                   |
-| project_id        | 301ec83caf7343f1bd1639a932efbdcb                                                                                                                       |
-| revision_number   | 0                                                                                                                                                      |
-| segment_id        | None                                                                                                                                                   |
-| service_types     |                                                                                                                                                        |
-| subnetpool_id     | None                                                                                                                                                   |
-| tags              |                                                                                                                                                        |
-| updated_at        | 2020-08-17T13:51:52Z                                                                                                                                   |
-+-------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+os@controller:~$ openstack subnet create --subnet-range 10.11.1.0/16 --gateway 10.11.0.1 --network TUC11-Network --allocation-pool start=10.11.1.0,end=10.11.2.255 --dns-nameserver 1.1.1.1 --dns-nameserver 8.8.8.8 TUC-Subnet-v4
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| allocation_pools  | 10.11.1.0-10.11.2.255                                                                                                                               |
+| cidr              | 10.11.0.0/16                                                                                                                                        |
+| created_at        | 2020-08-25T09:36:47Z                                                                                                                                |
+| description       |                                                                                                                                                     |
+| dns_nameservers   | 1.1.1.1, 8.8.8.8                                                                                                                                    |
+| enable_dhcp       | True                                                                                                                                                |
+| gateway_ip        | 10.11.0.1                                                                                                                                           |
+| host_routes       |                                                                                                                                                     |
+| id                | 9ccc4b0b-42e6-4d2d-946e-c58490c508a6                                                                                                                |
+| ip_version        | 4                                                                                                                                                   |
+| ipv6_address_mode | None                                                                                                                                                |
+| ipv6_ra_mode      | None                                                                                                                                                |
+| location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| name              | TUC-Subnet-v4                                                                                                                                       |
+| network_id        | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| prefix_length     | None                                                                                                                                                |
+| project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| revision_number   | 0                                                                                                                                                   |
+| segment_id        | None                                                                                                                                                |
+| service_types     |                                                                                                                                                     |
+| subnetpool_id     | None                                                                                                                                                |
+| tags              |                                                                                                                                                     |
+| updated_at        | 2020-08-25T09:36:47Z                                                                                                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+### Create a IPv6 subnet on the provider network.
+
+```
+$ openstack subnet create --subnet-range fe80::/64 --ip-version 6 --ipv6-ra-mode slaac --ipv6-address-mode slaac --network TUC11-Network --dns-nameserver 2001:4860:4860::8844 TUC-Subnet-v6
+
+```example output:```
+os@controller:~$ openstack subnet create --subnet-range fe80::/64 --ip-version 6 --ipv6-ra-mode slaac --ipv6-address-mode slaac --network TUC11-Network --dns-nameserver 2001:4860:4860::8844 TUC-Subnet-v6
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| allocation_pools  | fe80::2-fe80::ffff:ffff:ffff:ffff                                                                                                                   |
+| cidr              | fe80::/64                                                                                                                                           |
+| created_at        | 2020-08-25T09:53:41Z                                                                                                                                |
+| description       |                                                                                                                                                     |
+| dns_nameservers   | 2001:4860:4860::8844                                                                                                                                |
+| enable_dhcp       | True                                                                                                                                                |
+| gateway_ip        | fe80::1                                                                                                                                             |
+| host_routes       |                                                                                                                                                     |
+| id                | c495e909-6a5e-4b02-88d4-76293336a3c2                                                                                                                |
+| ip_version        | 6                                                                                                                                                   |
+| ipv6_address_mode | slaac                                                                                                                                               |
+| ipv6_ra_mode      | slaac                                                                                                                                               |
+| location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| name              | TUC-Subnet-v6                                                                                                                                       |
+| network_id        | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| prefix_length     | None                                                                                                                                                |
+| project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| revision_number   | 0                                                                                                                                                   |
+| segment_id        | None                                                                                                                                                |
+| service_types     |                                                                                                                                                     |
+| subnetpool_id     | None                                                                                                                                                |
+| tags              |                                                                                                                                                     |
+| updated_at        | 2020-08-25T09:53:41Z                                                                                                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 ### Verify network operation
@@ -264,13 +297,96 @@ native@stable-control-01:~$ openstack subnet create --subnet-range 10.31.0.0/16 
 # ip netns
 
 ```example output:```
-root@stable-compute-04:~# ip netns
-qdhcp-a2a6b774-88ef-477f-bd14-23e6ba73deef (id: 0)
+root@controller:~# ip netns
+qdhcp-08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 (id: 0)
 ```
+
 - Create the appropriate security group rules to allow ping and SSH access instances using the network.
 ```
 $ openstack security group rule create --proto icmp default
 ```
+
+- Show all networks
+```
+os@controller:~$ openstack network list
++--------------------------------------+---------------+----------------------------------------------------------------------------+
+| ID                                   | Name          | Subnets                                                                    |
++--------------------------------------+---------------+----------------------------------------------------------------------------+
+| 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 | TUC11-Network | 9ccc4b0b-42e6-4d2d-946e-c58490c508a6, c495e909-6a5e-4b02-88d4-76293336a3c2 |
++--------------------------------------+---------------+----------------------------------------------------------------------------+
+```
+
+- Show all subnets
+```
+os@controller:~$ openstack subnet list
++--------------------------------------+---------------+--------------------------------------+--------------+
+| ID                                   | Name          | Network                              | Subnet       |
++--------------------------------------+---------------+--------------------------------------+--------------+
+| 9ccc4b0b-42e6-4d2d-946e-c58490c508a6 | TUC-Subnet-v4 | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 | 10.11.0.0/16 |
+| c495e909-6a5e-4b02-88d4-76293336a3c2 | TUC-Subnet-v6 | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 | fe80::/64    |
++--------------------------------------+---------------+--------------------------------------+--------------+
+```
+
+- Show all ports
+```
+os@controller:~$ openstack port list
++--------------------------------------+-----------+-------------------+------------------------------------------------------------------------------------------+--------+
+| ID                                   | Name      | MAC Address       | Fixed IP Addresses                                                                       | Status |
++--------------------------------------+-----------+-------------------+------------------------------------------------------------------------------------------+--------+
+| b6e54f50-a9f8-403b-a774-6b5f804cd773 | DHCP-Port | fa:16:3e:2c:d8:d7 | ip_address='10.11.1.0', subnet_id='9ccc4b0b-42e6-4d2d-946e-c58490c508a6'                 | ACTIVE |
+|                                      |           |                   | ip_address='fe80::f816:3eff:fe2c:d8d7', subnet_id='c495e909-6a5e-4b02-88d4-76293336a3c2' |        |
++--------------------------------------+-----------+-------------------+------------------------------------------------------------------------------------------+--------+
+```
+
+- Ping IPv6 address on the DHCP port
+```
+ping6 -I brtuc11 fe80::f816:3eff:fe2c:d8d7
+```
+
+- DHCP Port details
+```
+os@controller:~$ openstack port show b6e54f50-a9f8-403b-a774-6b5f804cd773
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                   | Value                                                                                                                                               |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| admin_state_up          | UP                                                                                                                                                  |
+| allowed_address_pairs   |                                                                                                                                                     |
+| binding_host_id         | controller.etit.tu-chemnitz.de                                                                                                                      |
+| binding_profile         |                                                                                                                                                     |
+| binding_vif_details     | bridge_name='br-int', connectivity='l2', datapath_type='system', ovs_hybrid_plug='True', port_filter='True'                                         |
+| binding_vif_type        | ovs                                                                                                                                                 |
+| binding_vnic_type       | normal                                                                                                                                              |
+| created_at              | 2020-08-25T09:36:47Z                                                                                                                                |
+| data_plane_status       | None                                                                                                                                                |
+| description             |                                                                                                                                                     |
+| device_id               | dhcpd3377d3c-a0d1-5d71-9947-f17125c357bb-08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                       |
+| device_owner            | network:dhcp                                                                                                                                        |
+| dns_assignment          | None                                                                                                                                                |
+| dns_domain              | None                                                                                                                                                |
+| dns_name                | None                                                                                                                                                |
+| extra_dhcp_opts         |                                                                                                                                                     |
+| fixed_ips               | ip_address='10.11.1.0', subnet_id='9ccc4b0b-42e6-4d2d-946e-c58490c508a6'                                                                            |
+|                         | ip_address='fe80::f816:3eff:fe2c:d8d7', subnet_id='c495e909-6a5e-4b02-88d4-76293336a3c2'                                                            |
+| id                      | b6e54f50-a9f8-403b-a774-6b5f804cd773                                                                                                                |
+| location                | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| mac_address             | fa:16:3e:2c:d8:d7                                                                                                                                   |
+| name                    | DHCP-Port                                                                                                                                           |
+| network_id              | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| port_security_enabled   | False                                                                                                                                               |
+| project_id              | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| propagate_uplink_status | None                                                                                                                                                |
+| qos_policy_id           | None                                                                                                                                                |
+| resource_request        | None                                                                                                                                                |
+| revision_number         | 6                                                                                                                                                   |
+| security_group_ids      |                                                                                                                                                     |
+| status                  | ACTIVE                                                                                                                                              |
+| tags                    |                                                                                                                                                     |
+| trunk_details           | None                                                                                                                                                |
+| updated_at              | 2020-08-25T09:53:41Z                                                                                                                                |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+
 [Previous](../controller/neutron.md#install-and-configure-controller-node)
 [Neutron Home](../neutron.md#neutron-networking-service)
 [Next](../controller/horizon.md#openstack-dashboard-horizon)

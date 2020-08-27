@@ -202,6 +202,9 @@ region_name = TUCKN
 project_name = service
 username = neutron
 password = tuckn2020
+service_metadata_proxy = true
+metadata_proxy_shared_secret = tuckn2020
+
 
 [oslo_concurrency]
 # ...

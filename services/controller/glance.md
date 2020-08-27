@@ -208,6 +208,60 @@ os@controller:~$ openstack image create --file cirros-0.5.1-x86_64-disk.img --di
 | virtual_size     | None                                                                                                                                                                                       |
 | visibility       | public                                                                                                                                                                                     |
 +------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+$ openstack image create --file bionic-server-cloudimg-amd64.img --disk-format qcow2 --container-format bare --public bionic-server-cloudimg-amd64
+
+os@controller:~$ openstack image create --file bionic-server-cloudimg-amd64.img --disk-format qcow2 --container-format bare --public bionic-server-cloudimg-amd64
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field            | Value                                                                                                                                                                                      |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| checksum         | 6d31f6620503216667ada0fc55efc3e0                                                                                                                                                           |
+| container_format | bare                                                                                                                                                                                       |
+| created_at       | 2020-08-25T12:30:37Z                                                                                                                                                                       |
+| disk_format      | qcow2                                                                                                                                                                                      |
+| file             | /v2/images/6d6c390c-24e5-49d0-99f8-21ac568af45d/file                                                                                                                                       |
+| id               | 6d6c390c-24e5-49d0-99f8-21ac568af45d                                                                                                                                                       |
+| min_disk         | 0                                                                                                                                                                                          |
+| min_ram          | 0                                                                                                                                                                                          |
+| name             | bionic-server-cloudimg-amd64                                                                                                                                                               |
+| owner            | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                                                           |
+| properties       | os_hash_algo='sha512', os_hash_value='d8b615ef336d470cb240b09c35fc362de36aa1bceb61120ab3b5434c2ecd63454bec58490dc56ddec55932bd8afbbdca1712f3bbd94a12a16585c3a2b0bc07ec', os_hidden='False' |
+| protected        | False                                                                                                                                                                                      |
+| schema           | /v2/schemas/image                                                                                                                                                                          |
+| size             | 357302272                                                                                                                                                                                  |
+| status           | active                                                                                                                                                                                     |
+| tags             |                                                                                                                                                                                            |
+| updated_at       | 2020-08-25T12:30:38Z                                                                                                                                                                       |
+| virtual_size     | None                                                                                                                                                                                       |
+| visibility       | public                                                                                                                                                                                     |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+$ openstack image create --file focal-server-cloudimg-amd64.img --disk-format qcow2 --container-format bare --public focal-server-cloudimg-amd64
+
+os@controller:~$ openstack image create --file focal-server-cloudimg-amd64.img --disk-format qcow2 --container-format bare --public focal-server-cloudimg-amd64
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field            | Value                                                                                                                                                                                      |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| checksum         | fb7c01af21cfe0263b08e637db3effc1                                                                                                                                                           |
+| container_format | bare                                                                                                                                                                                       |
+| created_at       | 2020-08-25T12:04:47Z                                                                                                                                                                       |
+| disk_format      | qcow2                                                                                                                                                                                      |
+| file             | /v2/images/0af72659-a5c0-40a3-8b55-0b398e6b94f2/file                                                                                                                                       |
+| id               | 0af72659-a5c0-40a3-8b55-0b398e6b94f2                                                                                                                                                       |
+| min_disk         | 0                                                                                                                                                                                          |
+| min_ram          | 0                                                                                                                                                                                          |
+| name             | focal-server-cloudimg-amd64                                                                                                                                                                |
+| owner            | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                                                           |
+| properties       | os_hash_algo='sha512', os_hash_value='a6c617f3e3d285ab1ae16d8725e9a38bfcfdb21ae28114c78bca5e7e2db96aa97889d965ebfd23aa48c22d533fe1f3e3c5271d5fee246e1cfb0390ca3443101f', os_hidden='False' |
+| protected        | False                                                                                                                                                                                      |
+| schema           | /v2/schemas/image                                                                                                                                                                          |
+| size             | 544539136                                                                                                                                                                                  |
+| status           | active                                                                                                                                                                                     |
+| tags             |                                                                                                                                                                                            |
+| updated_at       | 2020-08-25T12:04:50Z                                                                                                                                                                       |
+| virtual_size     | None                                                                                                                                                                                       |
+| visibility       | public                                                                                                                                                                                     |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 - Confirm upload of the image and validate attributes:
@@ -215,11 +269,13 @@ os@controller:~$ openstack image create --file cirros-0.5.1-x86_64-disk.img --di
 $ openstack image list
 
 os@controller:~$ openstack image list
-+--------------------------------------+---------------------+--------+
-| ID                                   | Name                | Status |
-+--------------------------------------+---------------------+--------+
-| 1211d636-99bc-40f6-a139-58a7502b30e9 | cirros-0.5.1-x86_64 | active |
-+--------------------------------------+---------------------+--------+
++--------------------------------------+------------------------------+--------+
+| ID                                   | Name                         | Status |
++--------------------------------------+------------------------------+--------+
+| 982e4322-d3b8-4b20-96e9-71d4b7870a6b | bionic-server-cloudimg-amd64 | active |
+| 1211d636-99bc-40f6-a139-58a7502b30e9 | cirros-0.5.1-x86_64          | active |
+| 0af72659-a5c0-40a3-8b55-0b398e6b94f2 | focal-server-cloudimg-amd64  | active |
++--------------------------------------+------------------------------+--------+
 ```
 
 
