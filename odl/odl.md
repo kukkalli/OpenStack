@@ -76,5 +76,4 @@ sdn@sdnc:~/karaf-0.9.3/etc$ nano org.apache.karaf.features.cfg
 featuresBoot = 661cff14-76f4-4222-add7-5eba0313755f,odl-restconf-all,odl-netconf-topology,odl-mdsal-all,odl-mdsal-apidocs,odl-openflowplugin-app-southbound-cli,odl-openflowplugin-flow-services,odl-openflowplugin-app-notifications,odl-openflowplugin-app-topology,odl-openflowplugin-app-topology-lldp-discovery,odl-openflowplugin-app-forwardingrules-sync,odl-openflowplugin-flow-services-rest,features-openflowplugin,odl-openflowplugin-app-topology-manager,odl-mdsal-model-odl-l2-types
 ```
 
-[previous](java08.md)
 [Home](../opendaylight.md)

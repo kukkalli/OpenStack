@@ -4,7 +4,7 @@
 or
 
 ## Install JAVA 11
-[Install JDK 8](odl/java11.md)
+[Install JDK 11](odl/java11.md)
 
 ## Download and install OpenDaylight Fluorine
 [OpenDaylight](odl/odl.md)
