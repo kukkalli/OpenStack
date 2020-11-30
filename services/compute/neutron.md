@@ -410,6 +410,87 @@ os@controller:~$ openstack security group rule create --proto icmp default
 | tags              | []                                                                                                                                                  |
 | updated_at        | 2020-11-30T09:11:37Z                                                                                                                                |
 +-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+$ openstack security group rule create --ethertype IPv6 --proto ipv6-icmp default
+
+```example output:```
+os@controller:~$ openstack security group rule create --ethertype IPv6 --proto ipv6-icmp default
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2020-11-30T10:06:35Z                                                                                                                                |
+| description       |                                                                                                                                                     |
+| direction         | ingress                                                                                                                                             |
+| ether_type        | IPv6                                                                                                                                                |
+| id                | c4bab75a-c046-4286-aa63-a54d2a6ffdc6                                                                                                                |
+| location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| name              | None                                                                                                                                                |
+| port_range_max    | None                                                                                                                                                |
+| port_range_min    | None                                                                                                                                                |
+| project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| protocol          | ipv6-icmp                                                                                                                                           |
+| remote_group_id   | None                                                                                                                                                |
+| remote_ip_prefix  | ::/0                                                                                                                                                |
+| revision_number   | 0                                                                                                                                                   |
+| security_group_id | ef249e36-3cf8-4ca5-a6ea-45107f4d5491                                                                                                                |
+| tags              | []                                                                                                                                                  |
+| updated_at        | 2020-11-30T10:06:35Z                                                                                                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+$ openstack security group rule create --proto tcp --dst-port 22 default
+
+```example output:```
+os@controller:~$ openstack security group rule create --proto tcp --dst-port 22 default
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2020-11-30T10:04:11Z                                                                                                                                |
+| description       |                                                                                                                                                     |
+| direction         | ingress                                                                                                                                             |
+| ether_type        | IPv4                                                                                                                                                |
+| id                | f96bccf5-640f-40a2-944d-472e90a4ed80                                                                                                                |
+| location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| name              | None                                                                                                                                                |
+| port_range_max    | 22                                                                                                                                                  |
+| port_range_min    | 22                                                                                                                                                  |
+| project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| protocol          | tcp                                                                                                                                                 |
+| remote_group_id   | None                                                                                                                                                |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                           |
+| revision_number   | 0                                                                                                                                                   |
+| security_group_id | ef249e36-3cf8-4ca5-a6ea-45107f4d5491                                                                                                                |
+| tags              | []                                                                                                                                                  |
+| updated_at        | 2020-11-30T10:04:11Z                                                                                                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+$ openstack security group rule create --ethertype IPv6 --proto tcp --dst-port 22 default
+
+```example output:```
+os@controller:~$ openstack security group rule create --ethertype IPv6 --proto tcp --dst-port 22 default
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2020-11-30T10:07:34Z                                                                                                                                |
+| description       |                                                                                                                                                     |
+| direction         | ingress                                                                                                                                             |
+| ether_type        | IPv6                                                                                                                                                |
+| id                | 2d2f8a1c-c323-4ede-a5db-bf592af5258e                                                                                                                |
+| location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| name              | None                                                                                                                                                |
+| port_range_max    | 22                                                                                                                                                  |
+| port_range_min    | 22                                                                                                                                                  |
+| project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| protocol          | tcp                                                                                                                                                 |
+| remote_group_id   | None                                                                                                                                                |
+| remote_ip_prefix  | ::/0                                                                                                                                                |
+| revision_number   | 0                                                                                                                                                   |
+| security_group_id | ef249e36-3cf8-4ca5-a6ea-45107f4d5491                                                                                                                |
+| tags              | []                                                                                                                                                  |
+| updated_at        | 2020-11-30T10:07:34Z                                                                                                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 - Show all networks

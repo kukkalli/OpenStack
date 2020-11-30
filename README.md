@@ -43,5 +43,8 @@
 ### OpenStack Dashboard
 [Horizon](services/controller/horizon.md#openstack-dashboard-horizon)
 
+## Create Virtual Machines
+[Create VMs](services/create-vm.md#create-vms-on-cli)
+
 # OpenDaylight Setup for OpenStack
 [Install OpenDaylight](opendaylight.md)
