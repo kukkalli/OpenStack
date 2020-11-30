@@ -5,7 +5,7 @@
 ### Install and configure
 - Install the packages:
 ```
-# apt install neutron-openvswitch-agent
+# apt install neutron-openvswitch-agent neutron-dhcp-agent neutron-metadata-agent
 ```
 
 - Edit the ```/etc/neutron/neutron.conf``` file and complete the following actions:
@@ -13,9 +13,12 @@
 [DEFAULT]
 auth_strategy = keystone
 core_plugin = ml2
+service_plugins = router,metering
+allow_overlapping_ips = true
 notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
 global_physnet_mtu = 9000
+dhcp_agents_per_network = 2
 transport_url = rabbit://openstack:tuckn2020@10.10.0.21
 
 [agent]
@@ -67,6 +70,10 @@ The updated ```neutron.conf``` file can be found at: [neutron.conf](neutron.conf
 ```bash
 [DEFAULT]
 [agent]
+tunnel_types = vxlan
+veth_mtu = 9000
+l2_population = True
+
 [network_log]
 [ovs]
 local_ip = 10.10.0.31
@@ -79,6 +86,30 @@ enable_security_group = true
 [xenapi]
 ```
 The updated ```openvswitch_agent.ini``` file can be found at: [openvswitch_agent.ini](openvswitch_agent.ini)
+
+### Configure the DHCP agent
+- Edit the ```/etc/neutron/dhcp_agent.ini``` file and complete the following actions:
+```bash
+[DEFAULT]
+interface_driver = openvswitch
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+enable_isolated_metadata = True
+
+[agent]
+[ovs]
+```
+The updated ```dhcp_agent.ini``` file can be found at: [dhcp_agent.ini](dhcp_agent.ini)
+
+### Configure the matadata agent
+- Edit the ```/etc/neutron/metadata_agent.ini``` file and complete the following actions:
+```bash
+[DEFAULT]
+nova_metadata_host = 10.10.0.21
+metadata_proxy_shared_secret = tuckn2020
+
+[agent]
+[cache]```
+The updated ```metadata_agent.ini``` file can be found at: [metadata_agent.ini](metadata_agent.ini)
 
 ### Restart services
 
@@ -169,13 +200,15 @@ os@controller:~$ openstack network agent list --sort-column Host --sort-column B
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
 | ID                                   | Agent Type         | Host                           | Availability Zone | Alive | State | Binary                    |
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
-| 68e4f58f-c36f-4101-8565-e69dfbca40ab | Open vSwitch agent | compute01.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
-| 1c1197b9-a7fd-4a98-8cf3-fbd30b034e16 | Open vSwitch agent | compute02.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
-| c101161d-0e7c-498e-86e3-f46c50e963ee | DHCP agent         | controller.etit.tu-chemnitz.de | nova              | :-)   | UP    | neutron-dhcp-agent        |
-| 00b6c399-9ec9-4325-a27b-47dfaf939736 | L3 agent           | controller.etit.tu-chemnitz.de | nova              | :-)   | UP    | neutron-l3-agent          |
-| 06e80c97-7556-473f-9438-47274db774a4 | Metadata agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metadata-agent    |
-| 3eb5fec7-b7c0-4652-9149-ab6a45ad8c96 | Metering agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metering-agent    |
-| 890fbf39-f4cb-4d0c-ae27-8ef02c080453 | Open vSwitch agent | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-openvswitch-agent |
+| da4e6fff-ac13-4dc0-a1a4-3b9c39c1f625 | DHCP agent         | compute01.etit.tu-chemnitz.de  | nova              | :-)   | UP    | neutron-dhcp-agent        |
+| 055bd332-c5ea-4a5c-8e75-fe11a6d65425 | Metadata agent     | compute01.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-metadata-agent    |
+| 11690603-1c1c-4b0e-8767-5ded9223dbc8 | Open vSwitch agent | compute01.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
+| 74dcb9f8-1854-4ee5-ac0b-c3cac0a9e12a | DHCP agent         | compute02.etit.tu-chemnitz.de  | nova              | :-)   | UP    | neutron-dhcp-agent        |
+| cde690aa-452e-452e-a046-1541db0b701f | Metadata agent     | compute02.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-metadata-agent    |
+| f9b98a4f-e336-446e-af77-525a628f0791 | Open vSwitch agent | compute02.etit.tu-chemnitz.de  | None              | :-)   | UP    | neutron-openvswitch-agent |
+| 56b8d46e-c2b4-4bd6-9403-d639e3f47b21 | L3 agent           | controller.etit.tu-chemnitz.de | nova              | :-)   | UP    | neutron-l3-agent          |
+| 2adc0853-bd0a-4457-a8bd-57129a84f5c7 | Metadata agent     | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-metadata-agent    |
+| ba922131-8d42-4b8a-a654-7e34311dee5c | Open vSwitch agent | controller.etit.tu-chemnitz.de | None              | :-)   | UP    | neutron-openvswitch-agent |
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
 ```
 
@@ -191,10 +224,10 @@ os@controller:~$ openstack network create --share --provider-physical-network tu
 | admin_state_up            | UP                                                                                                                                                  |
 | availability_zone_hints   |                                                                                                                                                     |
 | availability_zones        |                                                                                                                                                     |
-| created_at                | 2020-08-25T09:27:00Z                                                                                                                                |
+| created_at                | 2020-11-30T08:56:38Z                                                                                                                                |
 | description               |                                                                                                                                                     |
 | dns_domain                | None                                                                                                                                                |
-| id                        | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| id                        | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                                                                |
 | ipv4_address_scope        | None                                                                                                                                                |
 | ipv6_address_scope        | None                                                                                                                                                |
 | is_default                | False                                                                                                                                               |
@@ -215,7 +248,7 @@ os@controller:~$ openstack network create --share --provider-physical-network tu
 | status                    | ACTIVE                                                                                                                                              |
 | subnets                   |                                                                                                                                                     |
 | tags                      |                                                                                                                                                     |
-| updated_at                | 2020-08-25T09:27:00Z                                                                                                                                |
+| updated_at                | 2020-11-30T08:56:39Z                                                                                                                                |
 +---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
@@ -231,19 +264,19 @@ os@controller:~$ openstack subnet create --subnet-range 10.11.1.0/16 --gateway 1
 +-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 | allocation_pools  | 10.11.1.0-10.11.2.255                                                                                                                               |
 | cidr              | 10.11.0.0/16                                                                                                                                        |
-| created_at        | 2020-08-25T09:36:47Z                                                                                                                                |
+| created_at        | 2020-11-30T08:57:48Z                                                                                                                                |
 | description       |                                                                                                                                                     |
 | dns_nameservers   | 1.1.1.1, 8.8.8.8                                                                                                                                    |
 | enable_dhcp       | True                                                                                                                                                |
 | gateway_ip        | 10.11.0.1                                                                                                                                           |
 | host_routes       |                                                                                                                                                     |
-| id                | 9ccc4b0b-42e6-4d2d-946e-c58490c508a6                                                                                                                |
+| id                | fd23cb2b-24b2-442e-91e4-ffc3ff4e4208                                                                                                                |
 | ip_version        | 4                                                                                                                                                   |
 | ipv6_address_mode | None                                                                                                                                                |
 | ipv6_ra_mode      | None                                                                                                                                                |
 | location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
 | name              | TUC-Subnet-v4                                                                                                                                       |
-| network_id        | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| network_id        | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                                                                |
 | prefix_length     | None                                                                                                                                                |
 | project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
 | revision_number   | 0                                                                                                                                                   |
@@ -251,8 +284,66 @@ os@controller:~$ openstack subnet create --subnet-range 10.11.1.0/16 --gateway 1
 | service_types     |                                                                                                                                                     |
 | subnetpool_id     | None                                                                                                                                                |
 | tags              |                                                                                                                                                     |
-| updated_at        | 2020-08-25T09:36:47Z                                                                                                                                |
+| updated_at        | 2020-11-30T08:57:48Z                                                                                                                                |
 +-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+#### Check the IPv4 HA-DHCP ports on provider network.
+```
+os@controller:~$ openstack port list
++--------------------------------------+------+-------------------+--------------------------------------------------------------------------+--------+
+| ID                                   | Name | MAC Address       | Fixed IP Addresses                                                       | Status |
++--------------------------------------+------+-------------------+--------------------------------------------------------------------------+--------+
+| 1d22605f-3354-48ed-9e2c-8e71804a7a94 |      | fa:16:3e:c3:3d:66 | ip_address='10.11.1.1', subnet_id='fd23cb2b-24b2-442e-91e4-ffc3ff4e4208' | ACTIVE |
+| 2b21b9e0-554e-42c5-ab83-729533e462a4 |      | fa:16:3e:73:02:7e | ip_address='10.11.1.0', subnet_id='fd23cb2b-24b2-442e-91e4-ffc3ff4e4208' | ACTIVE |
++--------------------------------------+------+-------------------+--------------------------------------------------------------------------+--------+
+```
+
+#### Verify network operation
+- On each compute node, verify creation of the qdhcp namespace.
+```
+# ip netns
+
+```example output:```
+# On compute01
+root@compute01:~# ip netns
+qdhcp-9e373e2c-0372-4a06-81a1-bc1cb4c62b85 (id: 0)
+
+root@compute01:~# ip netns exec qdhcp-9e373e2c-0372-4a06-81a1-bc1cb4c62b85 ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+17: tap2b21b9e0-55: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether fa:16:3e:73:02:7e brd ff:ff:ff:ff:ff:ff
+    inet 169.254.169.254/16 brd 169.254.255.255 scope global tap2b21b9e0-55
+       valid_lft forever preferred_lft forever
+    inet 10.11.1.0/16 brd 10.11.255.255 scope global tap2b21b9e0-55
+       valid_lft forever preferred_lft forever
+    inet6 fe80::f816:3eff:fe73:27e/64 scope link
+       valid_lft forever preferred_lft forever
+
+# On compute02
+root@compute02:~# ip netns
+qdhcp-9e373e2c-0372-4a06-81a1-bc1cb4c62b85 (id: 0)
+
+root@compute02:~# ip netns exec qdhcp-9e373e2c-0372-4a06-81a1-bc1cb4c62b85 ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+14: tap1d22605f-33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether fa:16:3e:c3:3d:66 brd ff:ff:ff:ff:ff:ff
+    inet 169.254.169.254/16 brd 169.254.255.255 scope global tap1d22605f-33
+       valid_lft forever preferred_lft forever
+    inet 10.11.1.1/16 brd 10.11.255.255 scope global tap1d22605f-33
+       valid_lft forever preferred_lft forever
+    inet6 fe80::f816:3eff:fec3:3d66/64 scope link
+       valid_lft forever preferred_lft forever       
 ```
 
 ### Create a IPv6 subnet on the provider network.
@@ -267,19 +358,19 @@ os@controller:~$ openstack subnet create --subnet-range fe80::/64 --ip-version 6
 +-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 | allocation_pools  | fe80::2-fe80::ffff:ffff:ffff:ffff                                                                                                                   |
 | cidr              | fe80::/64                                                                                                                                           |
-| created_at        | 2020-08-25T09:53:41Z                                                                                                                                |
+| created_at        | 2020-11-30T09:09:52Z                                                                                                                                |
 | description       |                                                                                                                                                     |
 | dns_nameservers   | 2001:4860:4860::8844                                                                                                                                |
 | enable_dhcp       | True                                                                                                                                                |
 | gateway_ip        | fe80::1                                                                                                                                             |
 | host_routes       |                                                                                                                                                     |
-| id                | c495e909-6a5e-4b02-88d4-76293336a3c2                                                                                                                |
+| id                | d0858e4f-0747-42ce-bf85-41271c01c6ef                                                                                                                |
 | ip_version        | 6                                                                                                                                                   |
 | ipv6_address_mode | slaac                                                                                                                                               |
 | ipv6_ra_mode      | slaac                                                                                                                                               |
 | location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
 | name              | TUC-Subnet-v6                                                                                                                                       |
-| network_id        | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| network_id        | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                                                                |
 | prefix_length     | None                                                                                                                                                |
 | project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
 | revision_number   | 0                                                                                                                                                   |
@@ -287,23 +378,38 @@ os@controller:~$ openstack subnet create --subnet-range fe80::/64 --ip-version 6
 | service_types     |                                                                                                                                                     |
 | subnetpool_id     | None                                                                                                                                                |
 | tags              |                                                                                                                                                     |
-| updated_at        | 2020-08-25T09:53:41Z                                                                                                                                |
+| updated_at        | 2020-11-30T09:09:52Z                                                                                                                                |
 +-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-### Verify network operation
-- On each compute node, verify creation of the qdhcp namespace.
-```
-# ip netns
-
-```example output:```
-root@controller:~# ip netns
-qdhcp-08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 (id: 0)
-```
 
 - Create the appropriate security group rules to allow ping and SSH access instances using the network.
 ```
 $ openstack security group rule create --proto icmp default
+
+```example output:```
+os@controller:~$ openstack security group rule create --proto icmp default
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2020-11-30T09:11:37Z                                                                                                                                |
+| description       |                                                                                                                                                     |
+| direction         | ingress                                                                                                                                             |
+| ether_type        | IPv4                                                                                                                                                |
+| id                | 29d7dad4-3c9c-4de5-b90b-b5b6d7ce4594                                                                                                                |
+| location          | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| name              | None                                                                                                                                                |
+| port_range_max    | None                                                                                                                                                |
+| port_range_min    | None                                                                                                                                                |
+| project_id        | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| protocol          | icmp                                                                                                                                                |
+| remote_group_id   | None                                                                                                                                                |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                           |
+| revision_number   | 0                                                                                                                                                   |
+| security_group_id | ef249e36-3cf8-4ca5-a6ea-45107f4d5491                                                                                                                |
+| tags              | []                                                                                                                                                  |
+| updated_at        | 2020-11-30T09:11:37Z                                                                                                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 - Show all networks
@@ -312,7 +418,7 @@ os@controller:~$ openstack network list
 +--------------------------------------+---------------+----------------------------------------------------------------------------+
 | ID                                   | Name          | Subnets                                                                    |
 +--------------------------------------+---------------+----------------------------------------------------------------------------+
-| 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 | TUC11-Network | 9ccc4b0b-42e6-4d2d-946e-c58490c508a6, c495e909-6a5e-4b02-88d4-76293336a3c2 |
+| 9e373e2c-0372-4a06-81a1-bc1cb4c62b85 | TUC11-Network | d0858e4f-0747-42ce-bf85-41271c01c6ef, fd23cb2b-24b2-442e-91e4-ffc3ff4e4208 |
 +--------------------------------------+---------------+----------------------------------------------------------------------------+
 ```
 
@@ -322,20 +428,22 @@ os@controller:~$ openstack subnet list
 +--------------------------------------+---------------+--------------------------------------+--------------+
 | ID                                   | Name          | Network                              | Subnet       |
 +--------------------------------------+---------------+--------------------------------------+--------------+
-| 9ccc4b0b-42e6-4d2d-946e-c58490c508a6 | TUC-Subnet-v4 | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 | 10.11.0.0/16 |
-| c495e909-6a5e-4b02-88d4-76293336a3c2 | TUC-Subnet-v6 | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4 | fe80::/64    |
+| d0858e4f-0747-42ce-bf85-41271c01c6ef | TUC-Subnet-v6 | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85 | fe80::/64    |
+| fd23cb2b-24b2-442e-91e4-ffc3ff4e4208 | TUC-Subnet-v4 | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85 | 10.11.0.0/16 |
 +--------------------------------------+---------------+--------------------------------------+--------------+
 ```
 
 - Show all ports
 ```
 os@controller:~$ openstack port list
-+--------------------------------------+-----------+-------------------+------------------------------------------------------------------------------------------+--------+
-| ID                                   | Name      | MAC Address       | Fixed IP Addresses                                                                       | Status |
-+--------------------------------------+-----------+-------------------+------------------------------------------------------------------------------------------+--------+
-| b6e54f50-a9f8-403b-a774-6b5f804cd773 | DHCP-Port | fa:16:3e:2c:d8:d7 | ip_address='10.11.1.0', subnet_id='9ccc4b0b-42e6-4d2d-946e-c58490c508a6'                 | ACTIVE |
-|                                      |           |                   | ip_address='fe80::f816:3eff:fe2c:d8d7', subnet_id='c495e909-6a5e-4b02-88d4-76293336a3c2' |        |
-+--------------------------------------+-----------+-------------------+------------------------------------------------------------------------------------------+--------+
++--------------------------------------+------+-------------------+------------------------------------------------------------------------------------------+--------+
+| ID                                   | Name | MAC Address       | Fixed IP Addresses                                                                       | Status |
++--------------------------------------+------+-------------------+------------------------------------------------------------------------------------------+--------+
+| 1d22605f-3354-48ed-9e2c-8e71804a7a94 |      | fa:16:3e:c3:3d:66 | ip_address='10.11.1.1', subnet_id='fd23cb2b-24b2-442e-91e4-ffc3ff4e4208'                 | ACTIVE |
+|                                      |      |                   | ip_address='fe80::f816:3eff:fec3:3d66', subnet_id='d0858e4f-0747-42ce-bf85-41271c01c6ef' |        |
+| 2b21b9e0-554e-42c5-ab83-729533e462a4 |      | fa:16:3e:73:02:7e | ip_address='10.11.1.0', subnet_id='fd23cb2b-24b2-442e-91e4-ffc3ff4e4208'                 | ACTIVE |
+|                                      |      |                   | ip_address='fe80::f816:3eff:fe73:27e', subnet_id='d0858e4f-0747-42ce-bf85-41271c01c6ef'  |        |
++--------------------------------------+------+-------------------+------------------------------------------------------------------------------------------+--------+
 ```
 
 - Ping IPv6 address on the DHCP port
@@ -345,44 +453,84 @@ ping6 -I brtuc11 fe80::f816:3eff:fe2c:d8d7
 
 - DHCP Port details
 ```
-os@controller:~$ openstack port show b6e54f50-a9f8-403b-a774-6b5f804cd773
+os@controller:~$ openstack port show 2b21b9e0-554e-42c5-ab83-729533e462a4
 +-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 | Field                   | Value                                                                                                                                               |
 +-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 | admin_state_up          | UP                                                                                                                                                  |
 | allowed_address_pairs   |                                                                                                                                                     |
-| binding_host_id         | controller.etit.tu-chemnitz.de                                                                                                                      |
+| binding_host_id         | compute01.etit.tu-chemnitz.de                                                                                                                       |
 | binding_profile         |                                                                                                                                                     |
 | binding_vif_details     | bridge_name='br-int', connectivity='l2', datapath_type='system', ovs_hybrid_plug='True', port_filter='True'                                         |
 | binding_vif_type        | ovs                                                                                                                                                 |
 | binding_vnic_type       | normal                                                                                                                                              |
-| created_at              | 2020-08-25T09:36:47Z                                                                                                                                |
+| created_at              | 2020-11-30T08:57:49Z                                                                                                                                |
 | data_plane_status       | None                                                                                                                                                |
 | description             |                                                                                                                                                     |
-| device_id               | dhcpd3377d3c-a0d1-5d71-9947-f17125c357bb-08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                       |
+| device_id               | dhcpc3be5b02-3df7-5fc8-9b4e-c2f0ced985e0-9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                       |
 | device_owner            | network:dhcp                                                                                                                                        |
 | dns_assignment          | None                                                                                                                                                |
 | dns_domain              | None                                                                                                                                                |
 | dns_name                | None                                                                                                                                                |
 | extra_dhcp_opts         |                                                                                                                                                     |
-| fixed_ips               | ip_address='10.11.1.0', subnet_id='9ccc4b0b-42e6-4d2d-946e-c58490c508a6'                                                                            |
-|                         | ip_address='fe80::f816:3eff:fe2c:d8d7', subnet_id='c495e909-6a5e-4b02-88d4-76293336a3c2'                                                            |
-| id                      | b6e54f50-a9f8-403b-a774-6b5f804cd773                                                                                                                |
+| fixed_ips               | ip_address='10.11.1.0', subnet_id='fd23cb2b-24b2-442e-91e4-ffc3ff4e4208'                                                                            |
+|                         | ip_address='fe80::f816:3eff:fe73:27e', subnet_id='d0858e4f-0747-42ce-bf85-41271c01c6ef'                                                             |
+| id                      | 2b21b9e0-554e-42c5-ab83-729533e462a4                                                                                                                |
 | location                | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
-| mac_address             | fa:16:3e:2c:d8:d7                                                                                                                                   |
-| name                    | DHCP-Port                                                                                                                                           |
-| network_id              | 08102d9b-8bc5-43ae-bd35-7624ac2cb6e4                                                                                                                |
+| mac_address             | fa:16:3e:73:02:7e                                                                                                                                   |
+| name                    |                                                                                                                                                     |
+| network_id              | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                                                                |
 | port_security_enabled   | False                                                                                                                                               |
 | project_id              | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
 | propagate_uplink_status | None                                                                                                                                                |
 | qos_policy_id           | None                                                                                                                                                |
 | resource_request        | None                                                                                                                                                |
-| revision_number         | 6                                                                                                                                                   |
+| revision_number         | 5                                                                                                                                                   |
 | security_group_ids      |                                                                                                                                                     |
 | status                  | ACTIVE                                                                                                                                              |
 | tags                    |                                                                                                                                                     |
 | trunk_details           | None                                                                                                                                                |
-| updated_at              | 2020-08-25T09:53:41Z                                                                                                                                |
+| updated_at              | 2020-11-30T09:09:53Z                                                                                                                                |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+
+os@controller:~$ openstack port show 1d22605f-3354-48ed-9e2c-8e71804a7a94
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                   | Value                                                                                                                                               |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| admin_state_up          | UP                                                                                                                                                  |
+| allowed_address_pairs   |                                                                                                                                                     |
+| binding_host_id         | compute02.etit.tu-chemnitz.de                                                                                                                       |
+| binding_profile         |                                                                                                                                                     |
+| binding_vif_details     | bridge_name='br-int', connectivity='l2', datapath_type='system', ovs_hybrid_plug='True', port_filter='True'                                         |
+| binding_vif_type        | ovs                                                                                                                                                 |
+| binding_vnic_type       | normal                                                                                                                                              |
+| created_at              | 2020-11-30T08:57:50Z                                                                                                                                |
+| data_plane_status       | None                                                                                                                                                |
+| description             |                                                                                                                                                     |
+| device_id               | dhcp951fa4a9-9a76-58f0-8e6f-ae48cfb159a2-9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                       |
+| device_owner            | network:dhcp                                                                                                                                        |
+| dns_assignment          | None                                                                                                                                                |
+| dns_domain              | None                                                                                                                                                |
+| dns_name                | None                                                                                                                                                |
+| extra_dhcp_opts         |                                                                                                                                                     |
+| fixed_ips               | ip_address='10.11.1.1', subnet_id='fd23cb2b-24b2-442e-91e4-ffc3ff4e4208'                                                                            |
+|                         | ip_address='fe80::f816:3eff:fec3:3d66', subnet_id='d0858e4f-0747-42ce-bf85-41271c01c6ef'                                                            |
+| id                      | 1d22605f-3354-48ed-9e2c-8e71804a7a94                                                                                                                |
+| location                | cloud='', project.domain_id=, project.domain_name='TUC', project.id='6b5e1b91ce6d40a082004e7b60b614c4', project.name='admin', region_name='', zone= |
+| mac_address             | fa:16:3e:c3:3d:66                                                                                                                                   |
+| name                    |                                                                                                                                                     |
+| network_id              | 9e373e2c-0372-4a06-81a1-bc1cb4c62b85                                                                                                                |
+| port_security_enabled   | False                                                                                                                                               |
+| project_id              | 6b5e1b91ce6d40a082004e7b60b614c4                                                                                                                    |
+| propagate_uplink_status | None                                                                                                                                                |
+| qos_policy_id           | None                                                                                                                                                |
+| resource_request        | None                                                                                                                                                |
+| revision_number         | 5                                                                                                                                                   |
+| security_group_ids      |                                                                                                                                                     |
+| status                  | ACTIVE                                                                                                                                              |
+| tags                    |                                                                                                                                                     |
+| trunk_details           | None                                                                                                                                                |
+| updated_at              | 2020-11-30T09:09:53Z                                                                                                                                |
 +-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 

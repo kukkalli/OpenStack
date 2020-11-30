@@ -49,7 +49,7 @@ TIME_ZONE = "UTC"
 
 AVAILABLE_THEMES = [
     ('default', 'Default', 'themes/default'),
-    ('material', 'Material', 'themes/material'),
+#    ('material', 'Material', 'themes/material'),
 ]
 
 DEFAULT_THEME = 'default'
@@ -64,10 +64,10 @@ OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
 OPENSTACK_KEYSTONE_DOMAIN_DROPDOWN = True
 
 OPENSTACK_KEYSTONE_DOMAIN_CHOICES = (
-  ('Stable', 'Stable'),
+  ('TUC', 'TUC'),
 )
 
-OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "Stable"
+OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "TUC"
 
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
 
@@ -125,3 +125,7 @@ Domain  : TUC
 Username: admin
 Password: tuckn2020
 ```
+
+[Neutron Home](../neutron.md#neutron-networking-service)
+[Home](../../README.md#install-openstack-services)
+[Next](../create-vm.md#create-vms-on-cli)

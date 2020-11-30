@@ -127,8 +127,8 @@ os@controller:~$ openstack endpoint create --region TUCKN network admin http://1
 #### Install and configure
 - Install the packages:
 ```
-# apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent neutron-metering-agent
-
+# apt install neutron-server neutron-plugin-ml2 neutron-openvswitch-agent neutron-l3-agent
+'# neutron-dhcp-agent neutron-metadata-agent neutron-metering-agent'
 
 ```
 
@@ -137,7 +137,7 @@ os@controller:~$ openstack endpoint create --region TUCKN network admin http://1
 [DEFAULT]
 auth_strategy = keystone
 core_plugin = ml2
-service_plugins = odl-router_v2,metering
+service_plugins = router,metering
 allow_overlapping_ips = true
 notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
@@ -192,12 +192,12 @@ The updated ```neutron.conf``` file can be found at: [neutron.conf](https://gith
 ```bash
 [DEFAULT]
 [ml2]
-type_drivers = local,flat,vlan,vxlan
+type_drivers = flat,vlan,vxlan
 tenant_network_types = vxlan
-# mechanism_drivers = openvswitch,l2population
-mechanism_drivers = opendaylight_v2
+mechanism_drivers = openvswitch,l2population
+# mechanism_drivers = opendaylight_v2
 extension_drivers = port_security,qos
-# physical_network_mtus = 9000
+physical_network_mtus = 9000
 
 [ml2_type_flat]
 flat_networks = tuc11
@@ -210,16 +210,16 @@ vni_ranges = 1:1000
 
 [ovs_driver]
 [securitygroup]
-# enable_security_group = true
+enable_security_group = true
 enable_ipset = true
 
 [sriov_driver]
 
-[ml2_odl]
-username = admin
-password = admin
-url = http://10.10.0.10:8181/controller/nb/v2/neutron
-port_binding_controller = pseudo-agentdb-binding
+# [ml2_odl]
+# username = admin
+# password = admin
+# url = http://10.10.0.10:8181/controller/nb/v2/neutron
+# port_binding_controller = pseudo-agentdb-binding
 ```
 The updated ```ml2_conf.ini``` file can be found at: [ml2_conf.ini](https://github.com/kukkalli/OpenStack/blob/master/services/controller/ml2_conf.ini)
 
@@ -256,19 +256,6 @@ interface_driver = openvswitch
 ```
 The updated ```l3_agent.ini``` file can be found at: [l3_agent.ini](l3_agent.ini)
 
-### Configure the DHCP agent
-- Edit the ```/etc/neutron/dhcp_agent.ini``` file and complete the following actions:
-```bash
-[DEFAULT]
-interface_driver = openvswitch
-dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
-enable_isolated_metadata = True
-
-[agent]
-[ovs]
-ovsdb_connection = tcp:10.10.0.10:6640
-```
-The updated ```dhcp_agent.ini``` file can be found at: [dhcp_agent.ini](dhcp_agent.ini)
 
 ### Configure the metadata agent
 - Edit the ```/etc/neutron/metadata_agent.ini``` file and complete the following actions:
@@ -297,7 +284,7 @@ The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](
 ### Finalize installation
 - Populate the database:
 ```
-# su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --config-file /etc/neutron/plugins/ml2/ml2_conf_odl.ini upgrade head" neutron
+# su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
 ```
 
 ### Restart services
@@ -306,7 +293,6 @@ The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](
 # service nova-api restart
 # service neutron-server restart
 # service neutron-openvswitch-agent restart
-# service neutron-dhcp-agent restart
 # service neutron-metadata-agent restart
 # service neutron-l3-agent restart
 # service neutron-metering-agent restart
@@ -315,7 +301,6 @@ The updated ```metering_agent.ini``` file can be found at: [metering_agent.ini](
 service nova-api restart
 service neutron-server restart
 service neutron-openvswitch-agent restart
-service neutron-dhcp-agent restart
 service neutron-metadata-agent restart
 service neutron-l3-agent restart
 ```
