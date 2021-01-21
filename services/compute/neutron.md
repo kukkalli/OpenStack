@@ -108,7 +108,8 @@ nova_metadata_host = 10.10.0.21
 metadata_proxy_shared_secret = tuckn2020
 
 [agent]
-[cache]```
+[cache]
+```
 The updated ```metadata_agent.ini``` file can be found at: [metadata_agent.ini](metadata_agent.ini)
 
 ### Restart services
@@ -212,7 +213,7 @@ os@controller:~$ openstack network agent list --sort-column Host --sort-column B
 +--------------------------------------+--------------------+--------------------------------+-------------------+-------+-------+---------------------------+
 ```
 
-### Create initial networks
+### Create initial networks 
 ```
 $ openstack network create --share --provider-physical-network tuc11 --provider-network-type flat "TUC11-Network"
 
