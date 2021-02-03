@@ -130,7 +130,6 @@ OPENSTACK_NEUTRON_NETWORK = {
     'enable_fip_topology_check': False,
     'enable_ha_router': True,
     'enable_ipv6': True,
-    # TODO(amotoki): Drop OPENSTACK_NEUTRON_NETWORK completely from here.
     # enable_quotas has the different default value here.
     'enable_quotas': True,
     'enable_rbac_policy': True,
