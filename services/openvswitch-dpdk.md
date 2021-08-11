@@ -40,20 +40,36 @@ All commands to be executed with sudo
 ovs-vsctl add-br brtuc11
 ovs-vsctl add-port brtuc11 tuc11
 
+ovs-vsctl add-br brmgmt
+ovs-vsctl add-port brmgmt mgmt
+
 ```IP Address reassignment on controller```
 ip addr flush dev tuc11
 ip addr add 10.11.0.21/16 dev brtuc11
 ip link set brtuc11 up
+
+ip addr flush dev mgmt
+ip addr add 10.10.0.21/16 dev brmgmt
+ip link set brmgmt up
 
 ```IP Address reassignment on compute01```
 ip addr flush dev tuc11
 ip addr add 10.11.0.31/16 dev brtuc11
 ip link set brtuc11 up
 
+ip addr flush dev mgmt
+ip addr add 10.10.0.31/16 dev brmgmt
+ip link set brmgmt up
+
 ```IP Address reassignment on compute02```
 ip addr flush dev tuc11
 ip addr add 10.11.0.32/16 dev brtuc11
 ip link set brtuc11 up
+
+ip addr flush dev mgmt
+ip addr add 10.10.0.32/16 dev brmgmt
+ip link set brmgmt up
+
 ```
 
 ### Verify OvS setup
