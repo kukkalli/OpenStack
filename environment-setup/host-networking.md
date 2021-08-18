@@ -23,13 +23,24 @@ network:
                 macaddress: b4:96:91:29:16:f2
             set-name: tuc11
             mtu: 9000
-            addresses:
-            - 10.11.0.21/16
 
         mgmt:
             match:
                 macaddress: d0:94:66:6e:29:b9
             set-name: mgmt
+            mtu: 9000
+
+    bridges:
+        brtuc11:
+            interfaces:
+                - tuc11
+            mtu: 9000
+            addresses:
+            - 10.11.0.21/16
+
+        brmgmt:
+            interfaces:
+                - mgmt
             mtu: 9000
             addresses:
             - 10.10.0.21/16
