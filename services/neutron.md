@@ -1,6 +1,6 @@
 ## Neutron (Networking Service)
 
-[Install OpenVswitch DPDK](openvswitch-dpdk.md#install-and-configure-openvswitch-dpdk)
+[Install OpenVswitch DPDK](openvswitch-dpdk.md#install-openvswitch-dpdk)
 
 [Installation on Controller Node](controller/neutron.md#install-and-configure-controller-node)
 

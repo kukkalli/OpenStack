@@ -106,6 +106,65 @@ IDX LINK             TYPE               OPERATIONAL SETUP
 9 links listed.
 ```
 
+### Create Persistent OvS bridges
+
+#### Create a file named ```ovsbridges.service``` in the path ```/etc/systemd/system/```
+
+```
+[Unit]
+Description=ethtool script
+
+[Service]
+ExecStart=/etc/setovs/setovsbridges.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### Create a shell file in ```/etc/setovs/setovsbridges.sh```
+```
+#!/bin/bash
+
+ip addr add 10.11.0.21/16 dev brtuc11
+ip link set brtuc11 up
+
+ip addr add 10.10.0.21/16 dev brmgmt
+ip link set brmgmt up
+
+ip r add default via 10.10.0.1
+
+echo 'nameserver 8.8.8.8' > /etc/resolv.conf
+
+exit
+```
+
+#### Modify ```/etc/netplan/50-cloud-init.yaml``` file
+```
+network:
+    version: 2
+    ethernets:
+        tuc11:
+            match:
+                macaddress: b4:96:91:29:16:f2
+            set-name: tuc11
+            mtu: 1500
+#            addresses:
+#            - 10.11.0.21/16
+
+        mgmt:
+            match:
+                macaddress: d0:94:66:6e:29:b9
+            set-name: mgmt
+            mtu: 1500
+#            addresses:
+#            - 10.10.0.21/16
+#            gateway4: 10.10.0.1
+#            nameservers:
+#                addresses:
+#                - 1.1.1.1
+#                - 8.8.8.8
+
+```
 
 [Neutron Home](neutron.md#neutron-networking-service)
 [Next](controller/neutron.md#install-and-configure-controller-node)
