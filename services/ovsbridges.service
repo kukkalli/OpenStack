@@ -1,0 +1,14 @@
+# Create a service named ovsbridges.service with the below content in /etc/systemd/system/ovsbridges.service
+
+[Unit]
+Description=ethtool script
+
+[Service]
+ExecStart=/etc/setovs/setovsbridges.sh
+
+[Install]
+WantedBy=multi-user.target
+
+# enable the service using the below command:
+# systemctl enable ovsbridges.service
+
